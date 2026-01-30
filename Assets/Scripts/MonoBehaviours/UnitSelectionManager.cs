@@ -14,14 +14,15 @@ namespace DotsRts.MonoBehaviours
                 var mouseWorldPosition = MouseWorldPosition.Instance.GetPosition();
 
                 var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-                var entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<UnitMover>().Build(entityManager);
+                var entityQuery = new EntityQueryBuilder(Allocator.Temp)
+                    .WithAll<UnitMover, Selected>().Build(entityManager);
+                
                 var unitMoverArray = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
                 for (int i = 0; i < unitMoverArray.Length; i++)
                 {
                     var unitMover = unitMoverArray[i];
                     unitMover.TargetPosition = mouseWorldPosition;
                     unitMoverArray[i] = unitMover;
-                    // entityManager.SetComponentData(entityArray[i], unitMover);
                 }
 
                 entityQuery.CopyFromComponentDataArray(unitMoverArray);

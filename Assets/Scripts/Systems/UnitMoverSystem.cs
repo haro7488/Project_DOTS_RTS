@@ -11,31 +11,40 @@ namespace DotsRts.Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (localTransform,
-                         unitMover,
-                         physicsVelocity) in
-                     SystemAPI.Query<
-                         RefRW<LocalTransform>,
-                         RefRO<UnitMover>,
-                         RefRW<PhysicsVelocity>
-                     >())
+            var unitMoverJob = new UnitMoverJob
             {
-                var moveDirection = unitMover.ValueRO.TargetPosition - localTransform.ValueRO.Position;
-                if (math.lengthsq(moveDirection) < 0.01f)
-                {
-                    physicsVelocity.ValueRW.Linear = float3.zero;
-                    continue;
-                }
+                DeltaTime = SystemAPI.Time.DeltaTime,
+            };
+            unitMoverJob.ScheduleParallel();
+        }
+    }
 
-                moveDirection = math.normalizesafe(moveDirection);
+    [BurstCompile]
+    public partial struct UnitMoverJob : IJobEntity
+    {
+        public float DeltaTime;
 
-                localTransform.ValueRW.Rotation = math.slerp(localTransform.ValueRO.Rotation,
-                    quaternion.LookRotation(moveDirection, math.up()),
-                    SystemAPI.Time.DeltaTime * unitMover.ValueRO.RotationSpeed);
-                // localTransform.ValueRW.Position += moveDirection * moveSpeed.ValueRO.Value * SystemAPI.Time.DeltaTime;
-                physicsVelocity.ValueRW.Linear = moveDirection * unitMover.ValueRO.MoveSpeed;
-                physicsVelocity.ValueRW.Angular = float3.zero;
+        public void Execute(
+            ref LocalTransform localTransform,
+            in UnitMover unitMover,
+            ref PhysicsVelocity physicsVelocity)
+        {
+            var moveDirection = unitMover.TargetPosition - localTransform.Position;
+
+            var reachedTargetDistanceSq = 2f;
+            if (math.lengthsq(moveDirection) < reachedTargetDistanceSq)
+            {
+                physicsVelocity.Linear = float3.zero;
+                physicsVelocity.Angular = float3.zero;
+                return;
             }
+
+            moveDirection = math.normalizesafe(moveDirection);
+            localTransform.Rotation = math.slerp(localTransform.Rotation,
+                quaternion.LookRotation(moveDirection, math.up()),
+                DeltaTime * unitMover.RotationSpeed);
+            physicsVelocity.Linear = moveDirection * unitMover.MoveSpeed;
+            physicsVelocity.Angular = float3.zero;
         }
     }
 }
