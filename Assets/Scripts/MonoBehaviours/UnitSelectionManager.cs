@@ -78,7 +78,6 @@ namespace DotsRts.MonoBehaviours
                     var physicsWorldSingleton = entityQuery.GetSingleton<PhysicsWorldSingleton>();
                     var collisionWorld = physicsWorldSingleton.CollisionWorld;
                     UnityEngine.Ray cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    var unitsLayer = 6;
                     var raycastInput = new RaycastInput
                     {
                         Start = cameraRay.GetPoint(0f),
@@ -86,13 +85,13 @@ namespace DotsRts.MonoBehaviours
                         Filter = new CollisionFilter
                         {
                             BelongsTo = ~0u,
-                            CollidesWith = 1u << unitsLayer,
+                            CollidesWith = 1u << GameAssets.UNITS_LAYER,
                             GroupIndex = 0,
                         }
                     };
                     if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
                     {
-                        if (entityManager.HasComponent<Unit>(raycastHit.Entity))
+                        if (entityManager.HasComponent<Unit>(raycastHit.Entity) && entityManager.HasComponent<Selected>(raycastHit.Entity))
                         {
                             entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);
                             var selected = entityManager.GetComponentData<Selected>(raycastHit.Entity);
