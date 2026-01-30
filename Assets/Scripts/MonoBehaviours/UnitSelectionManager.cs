@@ -37,10 +37,16 @@ namespace DotsRts.MonoBehaviours
 
                 var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
                 var entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<Selected>().Build(entityManager);
+
                 var entityArray = entityQuery.ToEntityArray(Allocator.Temp);
-                foreach (var entity in entityArray)
+                var selectedArray = entityQuery.ToComponentDataArray<Selected>(Allocator.Temp);
+                for (var i = 0; i < entityArray.Length; i++)
                 {
+                    var entity = entityArray[i];
                     entityManager.SetComponentEnabled<Selected>(entity, false);
+                    var selected = selectedArray[i];
+                    selected.OnDeselected = true;
+                    entityManager.SetComponentData(entityArray[i], selected);
                 }
 
                 var selectionAreaRect = GetSelectionAreaRect();
@@ -60,6 +66,9 @@ namespace DotsRts.MonoBehaviours
                         if (selectionAreaRect.Contains(unitScreenPosition))
                         {
                             entityManager.SetComponentEnabled<Selected>(entityArray[i], true);
+                            var selected = entityManager.GetComponentData<Selected>(entityArray[i]);
+                            selected.OnSelected = true;
+                            entityManager.SetComponentData(entityArray[i], selected);
                         }
                     }
                 }
@@ -86,6 +95,9 @@ namespace DotsRts.MonoBehaviours
                         if (entityManager.HasComponent<Unit>(raycastHit.Entity))
                         {
                             entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);
+                            var selected = entityManager.GetComponentData<Selected>(raycastHit.Entity);
+                            selected.OnSelected = true;
+                            entityManager.SetComponentData(raycastHit.Entity, selected);
                         }
                     }
                 }
@@ -100,7 +112,7 @@ namespace DotsRts.MonoBehaviours
                 var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
                 var entityQuery = new EntityQueryBuilder(Allocator.Temp)
                     .WithAll<UnitMover, Selected>().Build(entityManager);
-                
+
                 var unitMoverArray = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
                 var movePositionArray = GenerateMovePositionArray(mouseWorldPosition, unitMoverArray.Length);
                 for (int i = 0; i < unitMoverArray.Length; i++)

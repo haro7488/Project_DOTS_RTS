@@ -27,5 +27,8 @@ namespace DotsRts
     {
         public Entity VisualEntity;
         public float ShowScale;
+
+        public bool OnSelected;
+        public bool OnDeselected;
     }
 }
