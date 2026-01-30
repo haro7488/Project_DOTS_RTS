@@ -193,7 +193,8 @@ GameObject:
   - component: {fileID: 1076677462548437565}
   - component: {fileID: 6837262570670553557}
   - component: {fileID: 4872435325231398616}
-  m_Layer: 0
+  - component: {fileID: 3840538195260525110}
+  m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,3 +296,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.SelectedAuthoring
   VisualGameObject: {fileID: 6561018048371794571}
   ShowScale: 2
+--- !u!114 &3840538195260525110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176904191762140280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6057763ed9154056954dc2731a8d854f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.UnitAuthoring
