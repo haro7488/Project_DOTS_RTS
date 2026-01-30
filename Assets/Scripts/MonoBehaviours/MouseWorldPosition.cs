@@ -1,7 +1,27 @@
-﻿namespace MonoBehaviours
+﻿using UnityEngine;
+
+namespace DotsRts.MonoBehaviours
 {
-    public class MouseWorldPosition
+    public class MouseWorldPosition : MonoBehaviour
     {
-        
+        public static MouseWorldPosition Instance { get; private set; }
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        public Vector3 GetPosition()
+        {
+            var mouseCameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var plane = new Plane(Vector3.up, Vector3.zero);
+
+            if (plane.Raycast(mouseCameraRay, out float distance))
+            {
+                return mouseCameraRay.GetPoint(distance);
+            }
+
+            return Vector3.zero;
+        }
     }
 }
