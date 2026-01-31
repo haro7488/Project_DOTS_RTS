@@ -58,6 +58,7 @@ namespace DotsRts.Systems
                 {
                     var targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.TargetEntity);
                     targetHealth.ValueRW.HealthAmount -= bullet.ValueRO.DamageAmount;
+                    targetHealth.ValueRW.OnHealthChanged = true;
                     entityCommandBuffer.DestroyEntity(entity);
                 }
             }

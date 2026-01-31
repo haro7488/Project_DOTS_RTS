@@ -4,7 +4,7 @@ using Unity.Transforms;
 
 namespace DotsRts.Systems
 {
-    [UpdateInGroup(typeof(LateSimulationSystemGroup))]
+    [UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
     public partial struct ResetEventSystem : ISystem
     {
         [BurstCompile]
@@ -14,6 +14,11 @@ namespace DotsRts.Systems
             {
                 selected.ValueRW.OnSelected = false;
                 selected.ValueRW.OnDeselected = false;
+            }
+
+            foreach (var health in SystemAPI.Query<RefRW<Health>>())
+            {
+                health.ValueRW.OnHealthChanged = false;
             }
         }
     }

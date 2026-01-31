@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.Transforms;
 using UnityEngine;
 
 namespace DotsRts
@@ -6,6 +7,8 @@ namespace DotsRts
     public class ZombieSpawnerAuthoring : MonoBehaviour
     {
         public float TimerMax = 2f;
+        public float RandomWalkingDistanceMin = 5f;
+        public float RandomWalkingDistanceMax = 10f;
 
         private class ZombieSpawnerAuthoringBaker : Baker<ZombieSpawnerAuthoring>
         {
@@ -15,6 +18,8 @@ namespace DotsRts
                 AddComponent(entity, new ZombieSpawner
                 {
                     TimerMax = authoring.TimerMax,
+                    RandomWalkingDistanceMin = authoring.RandomWalkingDistanceMin,
+                    RandomWalkingDistanceMax = authoring.RandomWalkingDistanceMax,
                 });
             }
         }
@@ -24,5 +29,7 @@ namespace DotsRts
     {
         public float Timer;
         public float TimerMax;
+        public float RandomWalkingDistanceMin;
+        public float RandomWalkingDistanceMax;
     }
 }

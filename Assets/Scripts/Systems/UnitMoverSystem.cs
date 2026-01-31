@@ -8,6 +8,8 @@ namespace DotsRts.Systems
 {
     public partial struct UnitMoverSystem : ISystem
     {
+        public const float REACHED_TARGET_POSITION_DISTANCE_SQ = 2f;
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
@@ -31,7 +33,7 @@ namespace DotsRts.Systems
         {
             var moveDirection = unitMover.TargetPosition - localTransform.Position;
 
-            var reachedTargetDistanceSq = 2f;
+            var reachedTargetDistanceSq = UnitMoverSystem.REACHED_TARGET_POSITION_DISTANCE_SQ;
             if (math.lengthsq(moveDirection) < reachedTargetDistanceSq)
             {
                 physicsVelocity.Linear = float3.zero;
