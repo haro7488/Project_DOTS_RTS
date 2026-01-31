@@ -1,6 +1,9 @@
-﻿using Unity.Burst;
+﻿using System.Diagnostics;
+using Unity.Burst;
 using Unity.Entities;
+using UnityEditor.Build.Player;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace DotsRts.Systems
 {
@@ -27,8 +30,10 @@ namespace DotsRts.Systems
                 }
 
                 shootAttack.ValueRW.Timer = shootAttack.ValueRO.TimerMax;
-
-                Debug.Log("Shoot");
+                
+                var targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.TargetEntity);
+                var damageAmount = 1;
+                targetHealth.ValueRW.HealthAmount -= damageAmount;
             }
         }
     }

@@ -219,4 +219,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d39c717908f64b94a963ba3d107ec07e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.ShootAttackAuthoring
-  TimerMax: 0
+  TimerMax: 0.2
