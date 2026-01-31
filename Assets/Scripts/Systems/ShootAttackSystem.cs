@@ -1,11 +1,7 @@
-﻿using System.Diagnostics;
-using Unity.Burst;
+﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEditor.Build.Player;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace DotsRts.Systems
 {
@@ -36,7 +32,7 @@ namespace DotsRts.Systems
                 {
                     continue;
                 }
-                
+
                 var targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.TargetEntity);
 
                 if (math.distance(localTransform.ValueRO.Position, targetLocalTransform.Position) >
@@ -65,8 +61,9 @@ namespace DotsRts.Systems
                 shootAttack.ValueRW.Timer = shootAttack.ValueRO.TimerMax;
 
                 var bulletEntity = state.EntityManager.Instantiate(entitiesReferences.BulletPrefabEntity);
-                var bulletSpawnWorldPosition = localTransform.ValueRO.TransformPoint(shootAttack.ValueRO.BulletSpawnLocalPosition);
-                
+                var bulletSpawnWorldPosition =
+                    localTransform.ValueRO.TransformPoint(shootAttack.ValueRO.BulletSpawnLocalPosition);
+
                 SystemAPI.SetComponent(bulletEntity, LocalTransform.FromPosition(bulletSpawnWorldPosition));
 
                 var bulletBullet = SystemAPI.GetComponentRW<Bullet>(bulletEntity);
@@ -74,6 +71,9 @@ namespace DotsRts.Systems
 
                 var bulletTarget = SystemAPI.GetComponentRW<Target>(bulletEntity);
                 bulletTarget.ValueRW.TargetEntity = target.ValueRO.TargetEntity;
+                
+                shootAttack.ValueRW.OnShoot.IsTriggered = true;
+                shootAttack.ValueRW.OnShoot.ShootFromPosition = bulletSpawnWorldPosition;
             }
         }
     }

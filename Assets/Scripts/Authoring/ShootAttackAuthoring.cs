@@ -36,5 +36,12 @@ namespace DotsRts
         public int DamageAmount;
         public float AttackDistance;
         public float3 BulletSpawnLocalPosition;
+        public OnShootEvent OnShoot;
+
+        public struct OnShootEvent
+        {
+            public bool IsTriggered;
+            public float3 ShootFromPosition;
+        }
     }
 }

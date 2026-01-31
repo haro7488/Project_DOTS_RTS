@@ -165,6 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.EntityReferencesAuthoring
   BulletPrefabGameObject: {fileID: 5892738852085464107, guid: d4be44d139bc47746a40777c4ef9c3a3, type: 3}
   ZombiePrefabGameObject: {fileID: 8181397551560425035, guid: f3911db186cd4ca419e732287f79a586, type: 3}
+  ShootLightPrefabGameObject: {fileID: 3226898256681950563, guid: e1c0c57cdc2eaf043ad788fbe1562fd8, type: 3}
 --- !u!1001 &459733093
 PrefabInstance:
   m_ObjectHideFlags: 0

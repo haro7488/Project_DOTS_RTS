@@ -20,6 +20,11 @@ namespace DotsRts.Systems
             {
                 health.ValueRW.OnHealthChanged = false;
             }
+            
+            foreach (var shootAttack in SystemAPI.Query<RefRW<ShootAttack>>())
+            {
+                shootAttack.ValueRW.OnShoot.IsTriggered = false;
+            }
         }
     }
 }

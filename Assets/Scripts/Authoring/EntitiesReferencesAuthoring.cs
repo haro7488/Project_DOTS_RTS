@@ -7,6 +7,7 @@ namespace DotsRts
     {
         public GameObject BulletPrefabGameObject;
         public GameObject ZombiePrefabGameObject;
+        public GameObject ShootLightPrefabGameObject;
 
         private class EntityReferencesAuthoringBaker : Baker<EntitiesReferencesAuthoring>
         {
@@ -17,6 +18,7 @@ namespace DotsRts
                 {
                     BulletPrefabEntity = GetEntity(authoring.BulletPrefabGameObject, TransformUsageFlags.Dynamic),
                     ZombiePrefabEntity = GetEntity(authoring.ZombiePrefabGameObject, TransformUsageFlags.Dynamic),
+                    ShootLightPrefabEntity = GetEntity(authoring.ShootLightPrefabGameObject, TransformUsageFlags.Dynamic),
                 });
             }
         }
@@ -26,5 +28,6 @@ namespace DotsRts
     {
         public Entity BulletPrefabEntity;
         public Entity ZombiePrefabEntity;
+        public Entity ShootLightPrefabEntity;
     }
 }
