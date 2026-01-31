@@ -1,4 +1,5 @@
-﻿using Unity.Burst;
+﻿using System;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Transforms;
 
@@ -10,21 +11,54 @@ namespace DotsRts.Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var selected in SystemAPI.Query<RefRW<Selected>>().WithPresent<Selected>())
-            {
-                selected.ValueRW.OnSelected = false;
-                selected.ValueRW.OnDeselected = false;
-            }
-
-            foreach (var health in SystemAPI.Query<RefRW<Health>>())
-            {
-                health.ValueRW.OnHealthChanged = false;
-            }
+            new ResetShootAttackEventsJob().ScheduleParallel();
+            new ResetHealthEventsJob().ScheduleParallel();
+            new ResetSelectedEventsJob().ScheduleParallel();
             
-            foreach (var shootAttack in SystemAPI.Query<RefRW<ShootAttack>>())
-            {
-                shootAttack.ValueRW.OnShoot.IsTriggered = false;
-            }
+            // foreach (var selected in SystemAPI.Query<RefRW<Selected>>().WithPresent<Selected>())
+            // {
+            //     selected.ValueRW.OnSelected = false;
+            //     selected.ValueRW.OnDeselected = false;
+            // }
+            //
+            // foreach (var health in SystemAPI.Query<RefRW<Health>>())
+            // {
+            //     health.ValueRW.OnHealthChanged = false;
+            // }
+            //
+            // foreach (var shootAttack in SystemAPI.Query<RefRW<ShootAttack>>())
+            // {
+            //     shootAttack.ValueRW.OnShoot.IsTriggered = false;
+            // }
+        }
+    }
+
+    [BurstCompile]
+    public partial struct ResetShootAttackEventsJob : IJobEntity
+    {
+        public void Execute(ref ShootAttack shootAttack)
+        {
+            shootAttack.OnShoot.IsTriggered = false;
+        }
+    }
+
+    [BurstCompile]
+    public partial struct ResetHealthEventsJob : IJobEntity
+    {
+        public void Execute(ref Health health)
+        {
+            health.OnHealthChanged = false;
+        }
+    }
+
+    [BurstCompile]
+    [WithOptions(EntityQueryOptions.IgnoreComponentEnabledState)]
+    public partial struct ResetSelectedEventsJob : IJobEntity
+    {
+        public void Execute(ref Selected selected)
+        {
+            selected.OnSelected = false;
+            selected.OnDeselected = false;
         }
     }
 }
