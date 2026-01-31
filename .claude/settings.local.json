@@ -4,7 +4,12 @@
       "mcp__plugin_serena_serena__get_current_config",
       "mcp__plugin_serena_serena__activate_project",
       "Bash(git commit:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "mcp__plugin_serena_serena__check_onboarding_performed",
+      "mcp__plugin_serena_serena__onboarding",
+      "mcp__plugin_serena_serena__list_dir",
+      "mcp__plugin_serena_serena__read_file",
+      "mcp__plugin_serena_serena__write_memory"
     ]
   }
 }
