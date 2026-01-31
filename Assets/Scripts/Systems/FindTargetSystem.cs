@@ -52,6 +52,12 @@ namespace DotsRts.Systems
                 {
                     foreach (var distanceHit in distanceHitList)
                     {
+                        if (!SystemAPI.Exists(distanceHit.Entity) ||
+                            !SystemAPI.HasComponent<Unit>(distanceHit.Entity))
+                        {
+                            continue;
+                        }
+
                         var targetUnit = SystemAPI.GetComponent<Unit>(distanceHit.Entity);
                         if (targetUnit.Faction == findTarget.ValueRO.TargetFaction)
                         {

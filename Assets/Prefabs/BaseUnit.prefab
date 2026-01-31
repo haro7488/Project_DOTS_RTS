@@ -106,7 +106,6 @@ GameObject:
   - component: {fileID: 4785693779578490572}
   - component: {fileID: 3651275311172108122}
   - component: {fileID: 7119232117824208585}
-  - component: {fileID: 3567517135926723478}
   m_Layer: 6
   m_Name: BaseUnit
   m_TagString: Untagged
@@ -234,6 +233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b10ae3fe7b4062b9d63c3f7cd28bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.TargetAuthoring
+  TargetGameObject: {fileID: 0}
 --- !u!114 &7119232117824208585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,15 +247,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.HealthAuthoring
   HealthAmount: 100
---- !u!114 &3567517135926723478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9176904191762140280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Entities.Hybrid::Unity.Entities.Hybrid.Baking.LinkedEntityGroupAuthoring
