@@ -1,7 +1,9 @@
-﻿using Unity.Burst;
+﻿using System.Diagnostics;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using Debug = UnityEngine.Debug;
 
 namespace DotsRts.Systems
 {
@@ -34,28 +36,28 @@ namespace DotsRts.Systems
                 }
                 
                 var targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.TargetEntity);
+                var targetShootVictim = SystemAPI.GetComponent<ShootVictim>(target.ValueRO.TargetEntity);
+                var targetPosition = targetLocalTransform.TransformPoint(targetShootVictim.HitLocalPosition);
 
-                var distanceBeforeSq = math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position);
+                var distanceBeforeSq = math.distancesq(localTransform.ValueRO.Position, targetPosition);
 
-                var moveDirection = targetLocalTransform.Position - localTransform.ValueRO.Position;
+                var moveDirection = targetPosition - localTransform.ValueRO.Position;
                 moveDirection = math.normalize(moveDirection);
 
                 localTransform.ValueRW.Position += moveDirection * bullet.ValueRO.Speed * SystemAPI.Time.DeltaTime;
 
-                var distanceAfterSq = math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position);
+                var distanceAfterSq = math.distancesq(localTransform.ValueRO.Position, targetPosition);
 
                 if (distanceBeforeSq < distanceAfterSq)
                 {
-                    localTransform.ValueRW.Position = targetLocalTransform.Position;
+                    localTransform.ValueRW.Position = targetPosition;
                 }
-
-
+                
                 var destroyAfterSq = .2f;
-                if (math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position) < destroyAfterSq)
+                if (math.distancesq(localTransform.ValueRO.Position, targetPosition) < destroyAfterSq)
                 {
                     var targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.TargetEntity);
                     targetHealth.ValueRW.HealthAmount -= bullet.ValueRO.DamageAmount;
-
                     entityCommandBuffer.DestroyEntity(entity);
                 }
             }

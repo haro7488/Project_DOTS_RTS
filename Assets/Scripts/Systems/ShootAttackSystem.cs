@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Unity.Burst;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEditor.Build.Player;
 using UnityEngine;
@@ -8,6 +9,7 @@ using Debug = UnityEngine.Debug;
 
 namespace DotsRts.Systems
 {
+    [UpdateBefore(typeof(TransformSystemGroup))]
     public partial struct ShootAttackSystem : ISystem
     {
         public void OnCreate(ref SystemState state)
@@ -22,16 +24,37 @@ namespace DotsRts.Systems
 
             foreach (var (localTransform,
                          shootAttack,
-                         target)
+                         target,
+                         unitMover)
                      in SystemAPI.Query<
-                         RefRO<LocalTransform>,
+                         RefRW<LocalTransform>,
                          RefRW<ShootAttack>,
-                         RefRO<Target>>())
+                         RefRO<Target>,
+                         RefRW<UnitMover>>())
             {
                 if (target.ValueRO.TargetEntity == Entity.Null)
                 {
                     continue;
                 }
+                
+                var targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.TargetEntity);
+
+                if (math.distance(localTransform.ValueRO.Position, targetLocalTransform.Position) >
+                    shootAttack.ValueRO.AttackDistance)
+                {
+                    unitMover.ValueRW.TargetPosition = targetLocalTransform.Position;
+                    continue;
+                }
+                else
+                {
+                    unitMover.ValueRW.TargetPosition = localTransform.ValueRO.Position;
+                }
+
+                var aimDirection = targetLocalTransform.Position - localTransform.ValueRO.Position;
+                aimDirection = math.normalize(aimDirection);
+                var targetRotation = quaternion.LookRotationSafe(aimDirection, math.up());
+                localTransform.ValueRW.Rotation = math.slerp(localTransform.ValueRO.Rotation, targetRotation,
+                    SystemAPI.Time.DeltaTime * unitMover.ValueRO.RotationSpeed);
 
                 shootAttack.ValueRW.Timer -= SystemAPI.Time.DeltaTime;
                 if (shootAttack.ValueRO.Timer > 0f)
@@ -42,7 +65,9 @@ namespace DotsRts.Systems
                 shootAttack.ValueRW.Timer = shootAttack.ValueRO.TimerMax;
 
                 var bulletEntity = state.EntityManager.Instantiate(entitiesReferences.BulletPrefabEntity);
-                SystemAPI.SetComponent(bulletEntity, LocalTransform.FromPosition(localTransform.ValueRO.Position));
+                var bulletSpawnWorldPosition = localTransform.ValueRO.TransformPoint(shootAttack.ValueRO.BulletSpawnLocalPosition);
+                
+                SystemAPI.SetComponent(bulletEntity, LocalTransform.FromPosition(bulletSpawnWorldPosition));
 
                 var bulletBullet = SystemAPI.GetComponentRW<Bullet>(bulletEntity);
                 bulletBullet.ValueRW.DamageAmount = shootAttack.ValueRO.DamageAmount;

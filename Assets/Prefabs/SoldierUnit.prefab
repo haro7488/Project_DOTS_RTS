@@ -90,6 +90,37 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7096074808906791916
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3330524285483711388}
+  m_Layer: 0
+  m_Name: BulletSpawnPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3330524285483711388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7096074808906791916}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.269, y: 1.925, z: 1.976}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6694353537936104692}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1067564236655620659
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104,7 +135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4785693779578490572, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: Range
-      value: 7
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4785693779578490572, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: TargetFaction
@@ -160,6 +191,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5924449125936099015, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1675293774346669944}
+    - targetCorrespondingSourceObject: {fileID: 5924449125936099015, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3330524285483711388}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 9176904191762140280, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       insertIndex: -1
@@ -221,3 +255,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.ShootAttackAuthoring
   TimerMax: 0.2
   DamageAmount: 5
+  AttackDistance: 13
+  BulletSpawnPositionTransform: {fileID: 3330524285483711388}

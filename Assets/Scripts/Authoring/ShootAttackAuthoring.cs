@@ -1,4 +1,7 @@
-﻿using Unity.Entities;
+﻿using DotsRts.Systems;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 
 namespace DotsRts
@@ -7,6 +10,8 @@ namespace DotsRts
     {
         public float TimerMax;
         public int DamageAmount = 1;
+        public float AttackDistance = 10f;
+        public Transform BulletSpawnPositionTransform;
 
         private class ShootAttackAuthoringBaker : Baker<ShootAttackAuthoring>
         {
@@ -17,6 +22,8 @@ namespace DotsRts
                 {
                     TimerMax = authoring.TimerMax,
                     DamageAmount = authoring.DamageAmount,
+                    AttackDistance = authoring.AttackDistance,
+                    BulletSpawnLocalPosition = authoring.BulletSpawnPositionTransform.localPosition
                 });
             }
         }
@@ -27,5 +34,7 @@ namespace DotsRts
         public float Timer;
         public float TimerMax;
         public int DamageAmount;
+        public float AttackDistance;
+        public float3 BulletSpawnLocalPosition;
     }
 }
