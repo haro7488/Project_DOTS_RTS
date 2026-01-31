@@ -368,6 +368,8 @@ GameObject:
   - component: {fileID: 7119232117824208585}
   - component: {fileID: 3567517135926723478}
   - component: {fileID: 8776584652583791751}
+  - component: {fileID: 5513512348236705152}
+  - component: {fileID: 1427025481856595006}
   m_Layer: 6
   m_Name: BaseUnit
   m_TagString: Untagged
@@ -535,3 +537,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3f1c0df79344fdc9c5a35e9eb2441d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.MoveOverrideAuthoring
+--- !u!114 &5513512348236705152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176904191762140280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d4ee57f4a043ba83cd680283740445, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.LoseTargetAuthoring
+  LoseTargetDistance: 20
+--- !u!114 &1427025481856595006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176904191762140280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72f87e74105b4503bc8d838a1fba93a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.TargetOverrideAuthoring

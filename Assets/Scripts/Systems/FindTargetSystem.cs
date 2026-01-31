@@ -27,11 +27,13 @@ namespace DotsRts.Systems
 
             foreach (var (localTransform,
                          findTarget,
-                         target)
+                         target,
+                         targetOverride)
                      in SystemAPI.Query<
                          RefRO<LocalTransform>,
                          RefRW<FindTarget>,
-                         RefRW<Target>>())
+                         RefRW<Target>,
+                         RefRO<TargetOverride>>())
             {
                 findTarget.ValueRW.Timer -= SystemAPI.Time.DeltaTime;
                 if (findTarget.ValueRO.Timer > 0f)
@@ -40,6 +42,12 @@ namespace DotsRts.Systems
                 }
 
                 findTarget.ValueRW.Timer = findTarget.ValueRO.TimerMax;
+                if(targetOverride.ValueRO.TargetEntity != Entity.Null)
+                {
+                    target.ValueRW.TargetEntity = targetOverride.ValueRO.TargetEntity;
+                    continue;
+                }
+                
                 distanceHitList.Clear();
                 var collisionFilter = new CollisionFilter
                 {
