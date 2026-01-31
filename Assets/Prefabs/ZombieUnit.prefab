@@ -53,7 +53,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 85cd5279f313d294c8d4eb59ece3cb5b, type: 2}
     - target: {fileID: 4785693779578490572, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: Range
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4785693779578490572, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: TargetFaction

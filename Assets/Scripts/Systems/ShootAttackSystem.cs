@@ -21,12 +21,15 @@ namespace DotsRts.Systems
             foreach (var (localTransform,
                          shootAttack,
                          target,
-                         unitMover)
+                         unitMover,
+                         entity)
                      in SystemAPI.Query<
-                         RefRW<LocalTransform>,
-                         RefRW<ShootAttack>,
-                         RefRO<Target>,
-                         RefRW<UnitMover>>().WithDisabled<MoveOverride>())
+                             RefRW<LocalTransform>,
+                             RefRW<ShootAttack>,
+                             RefRO<Target>,
+                             RefRW<UnitMover>>()
+                         .WithDisabled<MoveOverride>()
+                         .WithEntityAccess())
             {
                 if (target.ValueRO.TargetEntity == Entity.Null)
                 {
@@ -60,6 +63,12 @@ namespace DotsRts.Systems
 
                 shootAttack.ValueRW.Timer = shootAttack.ValueRO.TimerMax;
 
+                var enemyTargetOverride = SystemAPI.GetComponentRW<TargetOverride>(target.ValueRO.TargetEntity);
+                if (enemyTargetOverride.ValueRO.TargetEntity == Entity.Null)
+                {
+                    enemyTargetOverride.ValueRW.TargetEntity = entity;
+                }
+
                 var bulletEntity = state.EntityManager.Instantiate(entitiesReferences.BulletPrefabEntity);
                 var bulletSpawnWorldPosition =
                     localTransform.ValueRO.TransformPoint(shootAttack.ValueRO.BulletSpawnLocalPosition);
@@ -71,7 +80,7 @@ namespace DotsRts.Systems
 
                 var bulletTarget = SystemAPI.GetComponentRW<Target>(bulletEntity);
                 bulletTarget.ValueRW.TargetEntity = target.ValueRO.TargetEntity;
-                
+
                 shootAttack.ValueRW.OnShoot.IsTriggered = true;
                 shootAttack.ValueRW.OnShoot.ShootFromPosition = bulletSpawnWorldPosition;
             }
