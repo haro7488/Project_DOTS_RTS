@@ -23,17 +23,6 @@ namespace DotsRts.Systems
                          RefRW<ActiveAnimation>,
                          RefRW<MaterialMeshInfo>>())
             {
-                if (Input.GetKeyDown(KeyCode.T))
-                {
-                    activeAnimation.ValueRW.ActiveAnimationType = AnimationType.SoldierIdle;
-                }
-
-                if (Input.GetKeyDown(KeyCode.Y))
-                {
-                    activeAnimation.ValueRW.ActiveAnimationType = AnimationType.SoldierWalk;
-                }
-
-
                 ref var animationData = ref animationDataHolder.AnimationDataBlobArrayBlobAssetReference.Value[
                     (int)activeAnimation.ValueRW.ActiveAnimationType];
 
@@ -42,7 +31,7 @@ namespace DotsRts.Systems
                 {
                     activeAnimation.ValueRW.FrameTimer -= animationData.FrameTimerMax;
                     activeAnimation.ValueRW.Frame = (activeAnimation.ValueRW.Frame + 1) % animationData.FrameMax;
-                    
+
                     materialMeshInfo.ValueRW.MeshID = animationData.BatchMeshIdBlobArray[activeAnimation.ValueRW.Frame];
                 }
             }

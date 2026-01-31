@@ -28,5 +28,6 @@ namespace DotsRts
         public float MoveSpeed;
         public float RotationSpeed;
         public float3 TargetPosition;
+        public bool IsMoving;
     }
 }

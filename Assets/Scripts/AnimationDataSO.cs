@@ -7,6 +7,8 @@ namespace DotsRts
         None,
         SoldierIdle,
         SoldierWalk,
+        ZombieIdle,
+        ZombieWalk,
     }
 
     [CreateAssetMenu]

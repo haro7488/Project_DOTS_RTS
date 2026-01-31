@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 714561764293560346}
   - component: {fileID: 2633725274541928047}
   - component: {fileID: 4408306981371013104}
+  - component: {fileID: 123513957011191922}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -90,6 +91,19 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &123513957011191922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3391560212450149990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0378425146aa4c0ea9b10fb718164aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.ActiveAnimationAuthoring
+  NextAnimationType: 0
 --- !u!1 &3448546983089361547
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,6 +384,8 @@ GameObject:
   - component: {fileID: 8776584652583791751}
   - component: {fileID: 5513512348236705152}
   - component: {fileID: 1427025481856595006}
+  - component: {fileID: 2074710816953999621}
+  - component: {fileID: 1390833886774821353}
   m_Layer: 6
   m_Name: BaseUnit
   m_TagString: Untagged
@@ -562,3 +578,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f87e74105b4503bc8d838a1fba93a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.TargetOverrideAuthoring
+--- !u!114 &2074710816953999621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176904191762140280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ef8637efad44f2b868d355263d46b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.AnimatedMeshAuthoring
+  MeshGameObject: {fileID: 3391560212450149990}
+--- !u!114 &1390833886774821353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176904191762140280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 062fba2cd8f44e7e80a81549ce8d4a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.UnitAnimationAuthoring
+  IdleAnimationType: 0
+  WalkAnimationType: 0

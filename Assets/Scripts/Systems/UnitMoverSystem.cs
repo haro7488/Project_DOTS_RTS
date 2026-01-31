@@ -28,19 +28,21 @@ namespace DotsRts.Systems
 
         public void Execute(
             ref LocalTransform localTransform,
-            in UnitMover unitMover,
+            ref UnitMover unitMover,
             ref PhysicsVelocity physicsVelocity)
         {
             var moveDirection = unitMover.TargetPosition - localTransform.Position;
 
             var reachedTargetDistanceSq = UnitMoverSystem.REACHED_TARGET_POSITION_DISTANCE_SQ;
-            if (math.lengthsq(moveDirection) < reachedTargetDistanceSq)
+            if (math.lengthsq(moveDirection) <= reachedTargetDistanceSq)
             {
                 physicsVelocity.Linear = float3.zero;
                 physicsVelocity.Angular = float3.zero;
+                unitMover.IsMoving = false;
                 return;
             }
 
+            unitMover.IsMoving = true;
             moveDirection = math.normalizesafe(moveDirection);
             localTransform.Rotation = math.slerp(localTransform.Rotation,
                 quaternion.LookRotation(moveDirection, math.up()),
