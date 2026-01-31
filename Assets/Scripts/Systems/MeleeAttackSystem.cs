@@ -32,7 +32,7 @@ namespace DotsRts.Systems
                          RefRO<LocalTransform>,
                          RefRW<MeleeAttack>,
                          RefRO<Target>,
-                         RefRW<UnitMover>>())
+                         RefRW<UnitMover>>().WithDisabled<MoveOverride>())
             {
                 if (target.ValueRO.TargetEntity == Entity.Null)
                 {

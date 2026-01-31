@@ -18,7 +18,6 @@ namespace DotsRts
                 {
                     MoveSpeed = authoring.MoveSpeed,
                     RotationSpeed = authoring.RotationSpeed,
-                    TargetPosition = authoring.transform.position,
                 });
             }
         }

@@ -3,6 +3,7 @@ using DotsRts.MonoBehaviours;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
@@ -47,6 +48,18 @@ namespace DotsRts.Systems
                     GroupIndex = 0,
                 };
 
+                var closestTargetEntity = Entity.Null;
+                var closestTargetDistance = float.MaxValue;
+                var currentTargetDistanceOffset = 0f;
+                if (target.ValueRO.TargetEntity != Entity.Null)
+                {
+                    closestTargetEntity = target.ValueRO.TargetEntity;
+                    var targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.TargetEntity);
+                    closestTargetDistance =
+                        math.distance(localTransform.ValueRO.Position, targetLocalTransform.Position);
+                    currentTargetDistanceOffset = 2f;
+                }
+
                 if (collisionWorld.OverlapSphere(localTransform.ValueRO.Position,
                         findTarget.ValueRO.Range, ref distanceHitList, collisionFilter))
                 {
@@ -61,8 +74,24 @@ namespace DotsRts.Systems
                         var targetUnit = SystemAPI.GetComponent<Unit>(distanceHit.Entity);
                         if (targetUnit.Faction == findTarget.ValueRO.TargetFaction)
                         {
-                            target.ValueRW.TargetEntity = distanceHit.Entity;
-                            break;
+                            if (closestTargetEntity == Entity.Null)
+                            {
+                                closestTargetEntity = distanceHit.Entity;
+                                closestTargetDistance = distanceHit.Distance;
+                            }
+                            else
+                            {
+                                if (distanceHit.Distance + currentTargetDistanceOffset < closestTargetDistance)
+                                {
+                                    closestTargetEntity = distanceHit.Entity;
+                                    closestTargetDistance = distanceHit.Distance;
+                                }
+                            }
+
+                            if (closestTargetEntity != Entity.Null)
+                            {
+                                target.ValueRW.TargetEntity = closestTargetEntity;
+                            }
                         }
                     }
                 }

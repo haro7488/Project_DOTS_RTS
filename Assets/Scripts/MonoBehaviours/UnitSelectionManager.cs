@@ -91,7 +91,8 @@ namespace DotsRts.MonoBehaviours
                     };
                     if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
                     {
-                        if (entityManager.HasComponent<Unit>(raycastHit.Entity) && entityManager.HasComponent<Selected>(raycastHit.Entity))
+                        if (entityManager.HasComponent<Unit>(raycastHit.Entity) &&
+                            entityManager.HasComponent<Selected>(raycastHit.Entity))
                         {
                             entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);
                             var selected = entityManager.GetComponentData<Selected>(raycastHit.Entity);
@@ -110,18 +111,20 @@ namespace DotsRts.MonoBehaviours
 
                 var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
                 var entityQuery = new EntityQueryBuilder(Allocator.Temp)
-                    .WithAll<UnitMover, Selected>().Build(entityManager);
+                    .WithAll<UnitMover, Selected>().WithPresent<MoveOverride>().Build(entityManager);
 
-                var unitMoverArray = entityQuery.ToComponentDataArray<UnitMover>(Allocator.Temp);
-                var movePositionArray = GenerateMovePositionArray(mouseWorldPosition, unitMoverArray.Length);
-                for (int i = 0; i < unitMoverArray.Length; i++)
+                var entityArray = entityQuery.ToEntityArray(Allocator.Temp);
+                var moveOverrideArray = entityQuery.ToComponentDataArray<MoveOverride>(Allocator.Temp);
+                var movePositionArray = GenerateMovePositionArray(mouseWorldPosition, moveOverrideArray.Length);
+                for (int i = 0; i < moveOverrideArray.Length; i++)
                 {
-                    var unitMover = unitMoverArray[i];
-                    unitMover.TargetPosition = movePositionArray[i];
-                    unitMoverArray[i] = unitMover;
+                    var moveOverride = moveOverrideArray[i];
+                    moveOverride.TargetPosition = movePositionArray[i];
+                    moveOverrideArray[i] = moveOverride;
+                    entityManager.SetComponentEnabled<MoveOverride>(entityArray[i], true);
                 }
 
-                entityQuery.CopyFromComponentDataArray(unitMoverArray);
+                entityQuery.CopyFromComponentDataArray(moveOverrideArray);
             }
         }
 
