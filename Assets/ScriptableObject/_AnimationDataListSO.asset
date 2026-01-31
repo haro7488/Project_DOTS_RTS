@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 928b7d3c18994608932f7be70c8bbb5e, type: 3}
+  m_Name: _AnimationDataListSO
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.ANimationDataListSO
+  AnimationDataSOList:
+  - {fileID: 11400000, guid: 8e953882d9ad83647b1cb87b62439a66, type: 2}
+  - {fileID: 11400000, guid: 480fead5f05d1c244b1db1c973b52999, type: 2}
+  - {fileID: 11400000, guid: 990aa121aacf1d249a1cd3ad1c50a079, type: 2}

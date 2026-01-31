@@ -165,8 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af336d13ca644a0a75f10764c570493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.AnimationDataHolderAuthoring
-  SoldierIdle: {fileID: 11400000, guid: 480fead5f05d1c244b1db1c973b52999, type: 2}
-  SoldierWalk: {fileID: 11400000, guid: 990aa121aacf1d249a1cd3ad1c50a079, type: 2}
+  AnimationDataListSO: {fileID: 11400000, guid: 44ca12d37a4966e49bc2a802f4fef071, type: 2}
 --- !u!4 &117671763
 Transform:
   m_ObjectHideFlags: 0

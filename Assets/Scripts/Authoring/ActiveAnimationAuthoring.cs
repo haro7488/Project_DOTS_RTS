@@ -12,8 +12,10 @@ namespace DotsRts
             public override void Bake(ActiveAnimationAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
+                
                 var entitiesGraphicsSystem =
                     World.DefaultGameObjectInjectionWorld.GetExistingSystemManaged<EntitiesGraphicsSystem>();
+                
                 AddComponent(entity, new ActiveAnimation
                 {
                 });
@@ -25,6 +27,6 @@ namespace DotsRts
     {
         public int Frame;
         public float FrameTimer;
-        public int ActiveAnimationIndex;
+        public AnimationType ActiveAnimationType;
     }
 }
