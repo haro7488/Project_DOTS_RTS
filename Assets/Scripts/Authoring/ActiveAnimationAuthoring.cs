@@ -25,6 +25,6 @@ namespace DotsRts
     {
         public int Frame;
         public float FrameTimer;
-        public BlobAssetReference<AnimationData> AnimationDataBlobAssetReference;
+        public int ActiveAnimationIndex;
     }
 }
