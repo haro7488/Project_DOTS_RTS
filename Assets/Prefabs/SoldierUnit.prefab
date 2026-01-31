@@ -204,7 +204,28 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 9176904191762140280, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1714606959842678159}
+    - targetCorrespondingSourceObject: {fileID: 3391560212450149990, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4126465769597535981}
   m_SourcePrefab: {fileID: 100100000, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+--- !u!1 &2432504614633108565 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3391560212450149990, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+  m_PrefabInstance: {fileID: 1067564236655620659}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4126465769597535981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2432504614633108565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0378425146aa4c0ea9b10fb718164aee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.ActiveAnimationAuthoring
+  SoldierIdle: {fileID: 11400000, guid: 990aa121aacf1d249a1cd3ad1c50a079, type: 2}
 --- !u!4 &6694353537936104692 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5924449125936099015, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
