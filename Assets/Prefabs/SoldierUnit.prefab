@@ -220,3 +220,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.ShootAttackAuthoring
   TimerMax: 0.2
+  DamageAmount: 5

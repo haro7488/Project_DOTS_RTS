@@ -27,6 +27,12 @@ namespace DotsRts.Systems
                          RefRO<Bullet>,
                          RefRO<Target>>().WithEntityAccess())
             {
+                if(target.ValueRO.TargetEntity == Entity.Null)
+                {
+                    entityCommandBuffer.DestroyEntity(entity);
+                    continue;
+                }
+                
                 var targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.TargetEntity);
 
                 var distanceBeforeSq = math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position);
