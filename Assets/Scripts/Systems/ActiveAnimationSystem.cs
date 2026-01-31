@@ -33,6 +33,18 @@ namespace DotsRts.Systems
                     activeAnimation.ValueRW.Frame = (activeAnimation.ValueRW.Frame + 1) % animationData.FrameMax;
 
                     materialMeshInfo.ValueRW.MeshID = animationData.BatchMeshIdBlobArray[activeAnimation.ValueRW.Frame];
+
+                    if (activeAnimation.ValueRO.Frame == 0 &&
+                        activeAnimation.ValueRO.ActiveAnimationType == AnimationType.SoldierShoot)
+                    {
+                        activeAnimation.ValueRW.ActiveAnimationType = AnimationType.None;
+                    }
+
+                    if (activeAnimation.ValueRO.Frame == 0 &&
+                        activeAnimation.ValueRO.ActiveAnimationType == AnimationType.ZombieAttack)
+                    {
+                        activeAnimation.ValueRW.ActiveAnimationType = AnimationType.None;
+                    }
                 }
             }
         }

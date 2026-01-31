@@ -23,6 +23,16 @@ namespace DotsRts.Systems
                          RefRW<ActiveAnimation>,
                          RefRW<MaterialMeshInfo>>())
             {
+                if (activeAnimation.ValueRO.ActiveAnimationType == AnimationType.SoldierShoot)
+                {
+                    continue;
+                }
+
+                if (activeAnimation.ValueRO.ActiveAnimationType == AnimationType.ZombieAttack)
+                {
+                    continue;
+                }
+                
                 if (activeAnimation.ValueRO.ActiveAnimationType != activeAnimation.ValueRO.NextAnimationType)
                 {
                     activeAnimation.ValueRW.Frame = 0;

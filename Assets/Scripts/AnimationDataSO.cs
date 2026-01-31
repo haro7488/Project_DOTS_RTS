@@ -9,6 +9,9 @@ namespace DotsRts
         SoldierWalk,
         ZombieIdle,
         ZombieWalk,
+        SoldierAim,
+        SoldierShoot,
+        ZombieAttack,
     }
 
     [CreateAssetMenu]

@@ -1,11 +1,11 @@
-﻿using System.Diagnostics;
-using Unity.Burst;
+﻿using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
-using Debug = UnityEngine.Debug;
+using UnityEngine;
+using RaycastHit = Unity.Physics.RaycastHit;
 
 namespace DotsRts.Systems
 {
@@ -91,6 +91,8 @@ namespace DotsRts.Systems
                     var targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.TargetEntity);
                     targetHealth.ValueRW.HealthAmount -= meleeAttack.ValueRO.DamageAmount;
                     targetHealth.ValueRW.OnHealthChanged = true;
+                    
+                    meleeAttack.ValueRW.OnAttacked = true;
                 }
             }
         }

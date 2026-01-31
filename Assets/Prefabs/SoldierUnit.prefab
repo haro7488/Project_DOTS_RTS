@@ -130,12 +130,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1390833886774821353, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+      propertyPath: AimAnimationType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390833886774821353, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: IdleAnimationType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1390833886774821353, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: WalkAnimationType
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390833886774821353, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+      propertyPath: ShootAnimationType
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3840538195260525110, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: faction

@@ -7,6 +7,9 @@ namespace DotsRts
     {
         public AnimationType IdleAnimationType;
         public AnimationType WalkAnimationType;
+        public AnimationType ShootAnimationType;
+        public AnimationType AimAnimationType;
+        public AnimationType MeleeAnimationType;
 
         private class UnitAnimationAuthoringBaker : Baker<UnitAnimationAuthoring>
         {
@@ -17,6 +20,9 @@ namespace DotsRts
                 {
                     IdleAnimationType = authoring.IdleAnimationType,
                     WalkAnimationType = authoring.WalkAnimationType,
+                    ShootAnimationType = authoring.ShootAnimationType,
+                    AimAnimationType = authoring.AimAnimationType,
+                    MeleeAnimationType = authoring.MeleeAnimationType,
                 });
             }
         }
@@ -26,5 +32,8 @@ namespace DotsRts
     {
         public AnimationType IdleAnimationType;
         public AnimationType WalkAnimationType;
+        public AnimationType ShootAnimationType;
+        public AnimationType AimAnimationType;
+        public AnimationType MeleeAnimationType;
     }
 }

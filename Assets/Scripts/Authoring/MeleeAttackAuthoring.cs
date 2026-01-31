@@ -30,5 +30,6 @@ namespace DotsRts
         public float TimerMax;
         public int DamageAmount;
         public float ColliderSize;
+        public bool OnAttacked;
     }
 }

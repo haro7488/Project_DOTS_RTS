@@ -47,6 +47,10 @@ PrefabInstance:
       propertyPath: WalkAnimationType
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1390833886774821353, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+      propertyPath: MeleeAnimationType
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2633725274541928047, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: m_Mesh
       value: 

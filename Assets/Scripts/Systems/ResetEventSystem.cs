@@ -1,7 +1,5 @@
-﻿using System;
-using Unity.Burst;
+﻿using Unity.Burst;
 using Unity.Entities;
-using Unity.Transforms;
 
 namespace DotsRts.Systems
 {
@@ -14,7 +12,8 @@ namespace DotsRts.Systems
             new ResetShootAttackEventsJob().ScheduleParallel();
             new ResetHealthEventsJob().ScheduleParallel();
             new ResetSelectedEventsJob().ScheduleParallel();
-            
+            new ResetMeleeAttackEventsJob().ScheduleParallel();
+
             // foreach (var selected in SystemAPI.Query<RefRW<Selected>>().WithPresent<Selected>())
             // {
             //     selected.ValueRW.OnSelected = false;
@@ -59,6 +58,15 @@ namespace DotsRts.Systems
         {
             selected.OnSelected = false;
             selected.OnDeselected = false;
+        }
+    }
+
+    [BurstCompile]
+    public partial struct ResetMeleeAttackEventsJob : IJobEntity
+    {
+        public void Execute(ref MeleeAttack meleeAttack)
+        {
+            meleeAttack.OnAttacked = false;
         }
     }
 }
