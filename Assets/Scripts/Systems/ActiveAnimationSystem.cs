@@ -1,7 +1,6 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
 using Unity.Rendering;
-using UnityEngine;
 
 namespace DotsRts.Systems
 {
@@ -17,34 +16,43 @@ namespace DotsRts.Systems
         {
             var animationDataHolder = SystemAPI.GetSingleton<AnimationDataHolder>();
 
-            foreach (var (activeAnimation,
-                         materialMeshInfo)
-                     in SystemAPI.Query<
-                         RefRW<ActiveAnimation>,
-                         RefRW<MaterialMeshInfo>>())
+            var activeAnimationJob = new ActiveAnimationJob
             {
-                ref var animationData = ref animationDataHolder.AnimationDataBlobArrayBlobAssetReference.Value[
-                    (int)activeAnimation.ValueRW.ActiveAnimationType];
+                DeltaTime = SystemAPI.Time.DeltaTime,
+                AnimationDataBlobArrayBlobAssetReference = animationDataHolder.AnimationDataBlobArrayBlobAssetReference
+            };
+            activeAnimationJob.ScheduleParallel();
+        }
+    }
 
-                activeAnimation.ValueRW.FrameTimer += SystemAPI.Time.DeltaTime;
-                if (activeAnimation.ValueRW.FrameTimer > animationData.FrameTimerMax)
+    public partial struct ActiveAnimationJob : IJobEntity
+    {
+        public float DeltaTime;
+        public BlobAssetReference<BlobArray<AnimationData>> AnimationDataBlobArrayBlobAssetReference;
+
+        public void Execute(ref ActiveAnimation activeAnimation, ref MaterialMeshInfo materialMeshInfo)
+        {
+            ref var animationData = ref AnimationDataBlobArrayBlobAssetReference.Value[
+                (int)activeAnimation.ActiveAnimationType];
+
+            activeAnimation.FrameTimer += DeltaTime;
+            if (activeAnimation.FrameTimer > animationData.FrameTimerMax)
+            {
+                activeAnimation.FrameTimer -= animationData.FrameTimerMax;
+                activeAnimation.Frame = (activeAnimation.Frame + 1) % animationData.FrameMax;
+
+                materialMeshInfo.MeshID = animationData.BatchMeshIdBlobArray[activeAnimation.Frame];
+
+                if (activeAnimation.Frame == 0 &&
+                    activeAnimation.ActiveAnimationType == AnimationType.SoldierShoot)
                 {
-                    activeAnimation.ValueRW.FrameTimer -= animationData.FrameTimerMax;
-                    activeAnimation.ValueRW.Frame = (activeAnimation.ValueRW.Frame + 1) % animationData.FrameMax;
+                    activeAnimation.ActiveAnimationType = AnimationType.None;
+                }
 
-                    materialMeshInfo.ValueRW.MeshID = animationData.BatchMeshIdBlobArray[activeAnimation.ValueRW.Frame];
-
-                    if (activeAnimation.ValueRO.Frame == 0 &&
-                        activeAnimation.ValueRO.ActiveAnimationType == AnimationType.SoldierShoot)
-                    {
-                        activeAnimation.ValueRW.ActiveAnimationType = AnimationType.None;
-                    }
-
-                    if (activeAnimation.ValueRO.Frame == 0 &&
-                        activeAnimation.ValueRO.ActiveAnimationType == AnimationType.ZombieAttack)
-                    {
-                        activeAnimation.ValueRW.ActiveAnimationType = AnimationType.None;
-                    }
+                if (activeAnimation.Frame == 0 &&
+                    activeAnimation.ActiveAnimationType == AnimationType.ZombieAttack)
+                {
+                    activeAnimation.ActiveAnimationType = AnimationType.None;
                 }
             }
         }
