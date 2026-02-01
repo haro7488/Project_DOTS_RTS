@@ -44,13 +44,7 @@ namespace DotsRts.Systems
                 materialMeshInfo.Mesh = animationData.intMeshIdBlobArray[activeAnimation.Frame];
 
                 if (activeAnimation.Frame == 0 &&
-                    activeAnimation.ActiveAnimationType == AnimationType.SoldierShoot)
-                {
-                    activeAnimation.ActiveAnimationType = AnimationType.None;
-                }
-
-                if (activeAnimation.Frame == 0 &&
-                    activeAnimation.ActiveAnimationType == AnimationType.ZombieAttack)
+                    AnimationDataSO.IsAnimationUninterruptible(activeAnimation.ActiveAnimationType))
                 {
                     activeAnimation.ActiveAnimationType = AnimationType.None;
                 }

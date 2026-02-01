@@ -119,23 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &102989619 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-  m_PrefabInstance: {fileID: 1876249144}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &102989632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102989619}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f515a887ff4ec5bbf92ba54648cabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.SetupUnitMoverDefaultPositionAuthoring
 --- !u!1 &117671761
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,23 +212,6 @@ MonoBehaviour:
   BulletPrefabGameObject: {fileID: 5892738852085464107, guid: d4be44d139bc47746a40777c4ef9c3a3, type: 3}
   ZombiePrefabGameObject: {fileID: 8181397551560425035, guid: f3911db186cd4ca419e732287f79a586, type: 3}
   ShootLightPrefabGameObject: {fileID: 3226898256681950563, guid: e1c0c57cdc2eaf043ad788fbe1562fd8, type: 3}
---- !u!1 &400048903 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-  m_PrefabInstance: {fileID: 1207445882}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &400048916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 400048903}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f515a887ff4ec5bbf92ba54648cabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.SetupUnitMoverDefaultPositionAuthoring
 --- !u!1001 &459733093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -305,28 +271,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1901071240}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
---- !u!1 &539210336 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-  m_PrefabInstance: {fileID: 674858994}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &539210349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 539210336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f515a887ff4ec5bbf92ba54648cabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.SetupUnitMoverDefaultPositionAuthoring
 --- !u!1001 &674858994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -390,28 +336,65 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 539210349}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
---- !u!1 &794096096 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-  m_PrefabInstance: {fileID: 1879410915}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &794096109
-MonoBehaviour:
+--- !u!1001 &735364312
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 794096096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f515a887ff4ec5bbf92ba54648cabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.SetupUnitMoverDefaultPositionAuthoring
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8181397551560425035, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_Name
+      value: ScoutUnit
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
 --- !u!1001 &1207445882
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -471,10 +454,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 400048916}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
 --- !u!1 &1449873111
 GameObject:
@@ -523,23 +503,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1499654802 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-  m_PrefabInstance: {fileID: 2126156288}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1499654815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499654802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f515a887ff4ec5bbf92ba54648cabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.SetupUnitMoverDefaultPositionAuthoring
 --- !u!1001 &1876249144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -599,10 +562,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 102989632}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
 --- !u!1001 &1879410915
 PrefabInstance:
@@ -663,28 +623,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 794096109}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
---- !u!1 &1901071227 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-  m_PrefabInstance: {fileID: 459733093}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1901071240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901071227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18f515a887ff4ec5bbf92ba54648cabf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.SetupUnitMoverDefaultPositionAuthoring
 --- !u!1001 &2126156288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -744,10 +684,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1499654815}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -762,3 +699,4 @@ SceneRoots:
   - {fileID: 2126156288}
   - {fileID: 1876249144}
   - {fileID: 1879410915}
+  - {fileID: 735364312}

@@ -30,16 +30,11 @@ namespace DotsRts.Systems
 
         public void Execute(ref ActiveAnimation activeAnimation, ref MaterialMeshInfo materialMeshInfo)
         {
-            if (activeAnimation.ActiveAnimationType == AnimationType.SoldierShoot)
+            if (AnimationDataSO.IsAnimationUninterruptible(activeAnimation.ActiveAnimationType))
             {
                 return;
             }
-
-            if (activeAnimation.ActiveAnimationType == AnimationType.ZombieAttack)
-            {
-                return;
-            }
-
+            
             if (activeAnimation.ActiveAnimationType != activeAnimation.NextAnimationType)
             {
                 activeAnimation.Frame = 0;
