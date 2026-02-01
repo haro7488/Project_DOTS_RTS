@@ -149,12 +149,20 @@ PrefabInstance:
       propertyPath: faction
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3840538195260525110, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+      propertyPath: _factionType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4785693779578490572, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: Range
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4785693779578490572, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: TargetFaction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4785693779578490572, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+      propertyPath: _targetFactionType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5924449125936099015, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
@@ -195,6 +203,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5924449125936099015, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8265529578692161819, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}
+      propertyPath: FactionType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9176904191762140280, guid: b7251c64ec0fa7e4f82328d09d0445c4, type: 3}

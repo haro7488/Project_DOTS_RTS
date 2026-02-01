@@ -63,10 +63,13 @@ namespace DotsRts.Systems
 
                 shootAttack.ValueRW.Timer = shootAttack.ValueRO.TimerMax;
 
-                var enemyTargetOverride = SystemAPI.GetComponentRW<TargetOverride>(target.ValueRO.TargetEntity);
-                if (enemyTargetOverride.ValueRO.TargetEntity == Entity.Null)
+                if (SystemAPI.HasComponent<TargetOverride>(target.ValueRO.TargetEntity))
                 {
-                    enemyTargetOverride.ValueRW.TargetEntity = entity;
+                    var enemyTargetOverride = SystemAPI.GetComponentRW<TargetOverride>(target.ValueRO.TargetEntity);
+                    if (enemyTargetOverride.ValueRO.TargetEntity == Entity.Null)
+                    {
+                        enemyTargetOverride.ValueRW.TargetEntity = entity;
+                    }
                 }
 
                 var bulletEntity = state.EntityManager.Instantiate(entitiesReferences.BulletPrefabEntity);

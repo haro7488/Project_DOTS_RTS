@@ -9,6 +9,8 @@ namespace DotsRts
         public float TimerMax = 2f;
         public float RandomWalkingDistanceMin = 5f;
         public float RandomWalkingDistanceMax = 10f;
+        public int NearbyZombieAmountMax = 5;
+        public float NearbyZombieAmountDistance = 10f;
 
         private class ZombieSpawnerAuthoringBaker : Baker<ZombieSpawnerAuthoring>
         {
@@ -20,6 +22,8 @@ namespace DotsRts
                     TimerMax = authoring.TimerMax,
                     RandomWalkingDistanceMin = authoring.RandomWalkingDistanceMin,
                     RandomWalkingDistanceMax = authoring.RandomWalkingDistanceMax,
+                    NearbyZombieAmountMax = authoring.NearbyZombieAmountMax,
+                    NearbyZombieAmountDistance = authoring.NearbyZombieAmountDistance,
                 });
             }
         }
@@ -31,5 +35,7 @@ namespace DotsRts
         public float TimerMax;
         public float RandomWalkingDistanceMin;
         public float RandomWalkingDistanceMax;
+        public int NearbyZombieAmountMax;
+        public float NearbyZombieAmountDistance;
     }
 }

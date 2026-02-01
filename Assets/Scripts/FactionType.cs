@@ -1,6 +1,6 @@
 ﻿namespace DotsRts
 {
-    public enum Faction
+    public enum FactionType
     {
         Friendly,
         Zombie,

@@ -569,8 +569,9 @@ GameObject:
   - component: {fileID: 1449873116}
   - component: {fileID: 1449873117}
   - component: {fileID: 1449873118}
-  m_Layer: 0
-  m_Name: ZombieSpawner
+  - component: {fileID: 1449873119}
+  m_Layer: 7
+  m_Name: BuildingZombieSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -588,9 +589,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e4b3a0fca65492d9e2c895effeb197d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.ZombieSpawnerAuthoring
-  TimerMax: 999
+  TimerMax: 1.5
   RandomWalkingDistanceMin: 5
   RandomWalkingDistanceMax: 10
+  NearbyZombieAmountMax: 4
+  NearbyZombieAmountDistance: 15
 --- !u!4 &1449873113
 Transform:
   m_ObjectHideFlags: 0
@@ -681,6 +684,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5, y: 5, z: 5}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &1449873119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449873111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e18f7ce9e28e48f79bd690a78584b829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.FactionAuthoring
+  FactionType: 1
 --- !u!1001 &1455113073
 PrefabInstance:
   m_ObjectHideFlags: 0

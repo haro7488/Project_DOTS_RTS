@@ -6,7 +6,7 @@ namespace DotsRts
     public class FindTargetAuthoring : MonoBehaviour
     {
         public float Range;
-        public Faction TargetFaction;
+        public FactionType _targetFactionType;
         public float TimerMax;
         
         private class FindTargetAuthoringBaker : Baker<FindTargetAuthoring>
@@ -17,7 +17,7 @@ namespace DotsRts
                 AddComponent(entity, new FindTarget
                 {
                     Range = authoring.Range,
-                    TargetFaction = authoring.TargetFaction,
+                    TargetFactionType = authoring._targetFactionType,
                     TimerMax = authoring.TimerMax,
                 });
             }
@@ -27,7 +27,7 @@ namespace DotsRts
     public struct FindTarget : IComponentData
     {
         public float Range;
-        public Faction TargetFaction;
+        public FactionType TargetFactionType;
         public float Timer;
         public float TimerMax;
     }

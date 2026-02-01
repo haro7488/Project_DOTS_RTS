@@ -122,7 +122,7 @@ namespace DotsRts.MonoBehaviours
                     Filter = new CollisionFilter
                     {
                         BelongsTo = ~0u,
-                        CollidesWith = 1u << GameAssets.UNITS_LAYER,
+                        CollidesWith = 1u << GameAssets.UNITS_LAYER | 1u << GameAssets.BUILDINGS_LAYER,
                         GroupIndex = 0,
                     }
                 };
@@ -130,11 +130,11 @@ namespace DotsRts.MonoBehaviours
                 var isAttackingSingleTarget = false;
                 if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
                 {
-                    if (entityManager.HasComponent<Unit>(raycastHit.Entity))
+                    if (entityManager.HasComponent<Faction>(raycastHit.Entity))
                     {
                         // Hit a Unit
-                        var unit = entityManager.GetComponentData<Unit>(raycastHit.Entity);
-                        if (unit.Faction == Faction.Zombie)
+                        var faction = entityManager.GetComponentData<Faction>(raycastHit.Entity);
+                        if (faction.FactionType == FactionType.Zombie)
                         {
                             // Right clicking on a zombie
                             isAttackingSingleTarget = true;

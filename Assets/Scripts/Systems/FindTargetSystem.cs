@@ -1,13 +1,10 @@
-﻿using System.Diagnostics;
-using DotsRts.MonoBehaviours;
+﻿using DotsRts.MonoBehaviours;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace DotsRts.Systems
 {
@@ -42,17 +39,17 @@ namespace DotsRts.Systems
                 }
 
                 findTarget.ValueRW.Timer = findTarget.ValueRO.TimerMax;
-                if(targetOverride.ValueRO.TargetEntity != Entity.Null)
+                if (targetOverride.ValueRO.TargetEntity != Entity.Null)
                 {
                     target.ValueRW.TargetEntity = targetOverride.ValueRO.TargetEntity;
                     continue;
                 }
-                
+
                 distanceHitList.Clear();
                 var collisionFilter = new CollisionFilter
                 {
                     BelongsTo = ~0u,
-                    CollidesWith = 1u << GameAssets.UNITS_LAYER,
+                    CollidesWith = 1u << GameAssets.UNITS_LAYER | 1u << GameAssets.BUILDINGS_LAYER,
                     GroupIndex = 0,
                 };
 
@@ -74,13 +71,13 @@ namespace DotsRts.Systems
                     foreach (var distanceHit in distanceHitList)
                     {
                         if (!SystemAPI.Exists(distanceHit.Entity) ||
-                            !SystemAPI.HasComponent<Unit>(distanceHit.Entity))
+                            !SystemAPI.HasComponent<Faction>(distanceHit.Entity))
                         {
                             continue;
                         }
 
-                        var targetUnit = SystemAPI.GetComponent<Unit>(distanceHit.Entity);
-                        if (targetUnit.Faction == findTarget.ValueRO.TargetFaction)
+                        var targetFaction = SystemAPI.GetComponent<Faction>(distanceHit.Entity);
+                        if (targetFaction.FactionType == findTarget.ValueRO.TargetFactionType)
                         {
                             if (closestTargetEntity == Entity.Null)
                             {
