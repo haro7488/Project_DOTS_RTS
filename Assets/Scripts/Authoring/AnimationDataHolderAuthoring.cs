@@ -9,6 +9,7 @@ namespace DotsRts
     public class AnimationDataHolderAuthoring : MonoBehaviour
     {
         public AnimationDataListSO AnimationDataListSO;
+        public Material DefaultMaterial;
 
         private class AnimationDataHolderAuthoringBaker : Baker<AnimationDataHolderAuthoring>
         {
@@ -16,15 +17,6 @@ namespace DotsRts
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 var animationDataHolder = new AnimationDataHolder();
-
-                var entitiesGraphicsSystem =
-                    World.DefaultGameObjectInjectionWorld.GetExistingSystemManaged<EntitiesGraphicsSystem>();
-
-                var blobBuilder = new BlobBuilder(Allocator.Temp);
-                ref var animationDataBlobArray = ref blobBuilder.ConstructRoot<BlobArray<AnimationData>>();
-
-                var animationDataBlobBuilderArray = blobBuilder.Allocate(ref animationDataBlobArray,
-                    System.Enum.GetValues(typeof(AnimationType)).Length);
 
                 var index = 0;
                 foreach (AnimationType animationType in System.Enum.GetValues(typeof(AnimationType)))
@@ -34,32 +26,47 @@ namespace DotsRts
                     {
                         continue;
                     }
-
-                    var blobBuilderArray = blobBuilder.Allocate(
-                        ref animationDataBlobBuilderArray[index].BatchMeshIdBlobArray,
-                        animationDataSO.MeshArray.Length);
-
-                    animationDataBlobBuilderArray[index].FrameTimerMax = animationDataSO.FrameTimerMax;
-                    animationDataBlobBuilderArray[index].FrameMax = animationDataSO.MeshArray.Length;
-
+                    
                     for (int i = 0; i < animationDataSO.MeshArray.Length; i++)
                     {
                         var mesh = animationDataSO.MeshArray[i];
-                        blobBuilderArray[i] = entitiesGraphicsSystem.RegisterMesh(mesh);
+                        var additionalEntity = CreateAdditionalEntity(TransformUsageFlags.None, false);
+
+                        AddComponent(additionalEntity, new MaterialMeshInfo());
+                        AddComponent(additionalEntity, new RenderMeshUnmanaged
+                        {
+                            materialForSubMesh = authoring.DefaultMaterial,
+                            mesh = mesh,
+                        });
+                        AddComponent(additionalEntity, new AnimationDataHolderSubEntity
+                        {
+                            AnimationType = animationType,
+                            MeshIndex = i,
+                        });
                     }
 
                     index++;
                 }
-
-                animationDataHolder.AnimationDataBlobArrayBlobAssetReference =
-                    blobBuilder.CreateBlobAssetReference<BlobArray<AnimationData>>(Allocator.Persistent);
-
-                blobBuilder.Dispose();
-                AddBlobAsset(ref animationDataHolder.AnimationDataBlobArrayBlobAssetReference, out var objectHash);
+                
+                AddComponent(entity, new AnimationDataHolderObjectData
+                {
+                    AnimationDataListSO = authoring.AnimationDataListSO,
+                });
 
                 AddComponent(entity, animationDataHolder);
             }
         }
+    }
+
+    public struct AnimationDataHolderObjectData : IComponentData
+    {
+        public UnityObjectRef<AnimationDataListSO> AnimationDataListSO;
+    }
+
+    public struct AnimationDataHolderSubEntity : IComponentData
+    {
+        public AnimationType AnimationType;
+        public int MeshIndex;
     }
 
     public struct AnimationDataHolder : IComponentData
@@ -71,6 +78,6 @@ namespace DotsRts
     {
         public float FrameTimerMax;
         public int FrameMax;
-        public BlobArray<BatchMeshID> BatchMeshIdBlobArray;
+        public BlobArray<int> intMeshIdBlobArray;
     }
 }

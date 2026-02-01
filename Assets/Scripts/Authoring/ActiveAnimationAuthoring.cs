@@ -1,7 +1,5 @@
 ﻿using Unity.Entities;
-using Unity.Rendering;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace DotsRts
 {
@@ -14,9 +12,6 @@ namespace DotsRts
             public override void Bake(ActiveAnimationAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-
-                var entitiesGraphicsSystem =
-                    World.DefaultGameObjectInjectionWorld.GetExistingSystemManaged<EntitiesGraphicsSystem>();
 
                 AddComponent(entity, new ActiveAnimation
                 {

@@ -166,6 +166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.AnimationDataHolderAuthoring
   AnimationDataListSO: {fileID: 11400000, guid: 44ca12d37a4966e49bc2a802f4fef071, type: 2}
+  DefaultMaterial: {fileID: 2100000, guid: dd5ad9aa2bda4b5429d105dfedfc7125, type: 2}
 --- !u!4 &117671763
 Transform:
   m_ObjectHideFlags: 0

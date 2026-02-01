@@ -49,7 +49,7 @@ namespace DotsRts.Systems
                 ref var animationData = ref AnimationDataBlobArrayBlobAssetReference.Value[
                     (int)activeAnimation.ActiveAnimationType];
 
-                materialMeshInfo.MeshID = animationData.BatchMeshIdBlobArray[0];
+                materialMeshInfo.Mesh = animationData.intMeshIdBlobArray[0];
             }
         }
     }

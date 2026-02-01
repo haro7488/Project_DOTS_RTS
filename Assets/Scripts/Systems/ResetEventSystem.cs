@@ -1,34 +1,30 @@
 ﻿using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 
 namespace DotsRts.Systems
 {
     [UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
     public partial struct ResetEventSystem : ISystem
     {
+        private NativeArray<JobHandle> _jobHandleNativeArray;
+
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
+        {
+            _jobHandleNativeArray = new NativeArray<JobHandle>(4, Allocator.Persistent);
+        }
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            new ResetShootAttackEventsJob().ScheduleParallel();
-            new ResetHealthEventsJob().ScheduleParallel();
-            new ResetSelectedEventsJob().ScheduleParallel();
-            new ResetMeleeAttackEventsJob().ScheduleParallel();
+            _jobHandleNativeArray[0] = new ResetShootAttackEventsJob().ScheduleParallel(state.Dependency);
+            _jobHandleNativeArray[1] = new ResetHealthEventsJob().ScheduleParallel(state.Dependency);
+            _jobHandleNativeArray[2] = new ResetSelectedEventsJob().ScheduleParallel(state.Dependency);
+            _jobHandleNativeArray[3] = new ResetMeleeAttackEventsJob().ScheduleParallel(state.Dependency);
 
-            // foreach (var selected in SystemAPI.Query<RefRW<Selected>>().WithPresent<Selected>())
-            // {
-            //     selected.ValueRW.OnSelected = false;
-            //     selected.ValueRW.OnDeselected = false;
-            // }
-            //
-            // foreach (var health in SystemAPI.Query<RefRW<Health>>())
-            // {
-            //     health.ValueRW.OnHealthChanged = false;
-            // }
-            //
-            // foreach (var shootAttack in SystemAPI.Query<RefRW<ShootAttack>>())
-            // {
-            //     shootAttack.ValueRW.OnShoot.IsTriggered = false;
-            // }
+            state.Dependency = JobHandle.CombineDependencies(_jobHandleNativeArray);
         }
     }
 
