@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e69e625de464eafaaeab45d354279bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.MonoBehaviours.GameAssets
+  UnitTypeListSO: {fileID: 11400000, guid: aa32a49d8994b5241bf11983a3ec86ab, type: 2}
 --- !u!4 &381010997
 Transform:
   m_ObjectHideFlags: 0

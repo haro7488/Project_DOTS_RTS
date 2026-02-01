@@ -85,14 +85,13 @@ namespace DotsRts.MonoBehaviours
                         Filter = new CollisionFilter
                         {
                             BelongsTo = ~0u,
-                            CollidesWith = 1u << GameAssets.UNITS_LAYER,
+                            CollidesWith = 1u << GameAssets.UNITS_LAYER | 1u << GameAssets.BUILDINGS_LAYER,
                             GroupIndex = 0,
                         }
                     };
                     if (collisionWorld.CastRay(raycastInput, out Unity.Physics.RaycastHit raycastHit))
                     {
-                        if (entityManager.HasComponent<Unit>(raycastHit.Entity) &&
-                            entityManager.HasComponent<Selected>(raycastHit.Entity))
+                        if (entityManager.HasComponent<Selected>(raycastHit.Entity))
                         {
                             entityManager.SetComponentEnabled<Selected>(raycastHit.Entity, true);
                             var selected = entityManager.GetComponentData<Selected>(raycastHit.Entity);
@@ -160,7 +159,8 @@ namespace DotsRts.MonoBehaviours
                 if (!isAttackingSingleTarget)
                 {
                     entityQuery = new EntityQueryBuilder(Allocator.Temp)
-                        .WithAll<UnitMover, Selected>().WithPresent<MoveOverride, TargetOverride>().Build(entityManager);
+                        .WithAll<UnitMover, Selected>().WithPresent<MoveOverride, TargetOverride>()
+                        .Build(entityManager);
 
                     var entityArray = entityQuery.ToEntityArray(Allocator.Temp);
                     var moveOverrideArray = entityQuery.ToComponentDataArray<MoveOverride>(Allocator.Temp);
@@ -172,7 +172,7 @@ namespace DotsRts.MonoBehaviours
                         moveOverride.TargetPosition = movePositionArray[i];
                         moveOverrideArray[i] = moveOverride;
                         entityManager.SetComponentEnabled<MoveOverride>(entityArray[i], true);
-                        
+
                         var targetOverride = targetOverrideArray[i];
                         targetOverride.TargetEntity = Entity.Null;
                         targetOverrideArray[i] = targetOverride;
@@ -181,6 +181,21 @@ namespace DotsRts.MonoBehaviours
                     entityQuery.CopyFromComponentDataArray(moveOverrideArray);
                     entityQuery.CopyFromComponentDataArray(targetOverrideArray);
                 }
+
+                // Handle Barrakcs Rally Position
+                entityQuery = new EntityQueryBuilder(Allocator.Temp)
+                    .WithAll<Selected, BuildingBarracks, LocalTransform>().Build(entityManager);
+
+                var buildingBarracksArray = entityQuery.ToComponentDataArray<BuildingBarracks>(Allocator.Temp);
+                var localTransformArray = entityQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
+                for (int i = 0; i < localTransformArray.Length; i++)
+                {
+                    var buildingBarracks = buildingBarracksArray[i];
+                    buildingBarracks.RallyPositionOffset = (float3)mouseWorldPosition - localTransformArray[i].Position;
+                    buildingBarracksArray[i] = buildingBarracks;
+                }
+
+                entityQuery.CopyFromComponentDataArray(buildingBarracksArray);
             }
         }
 

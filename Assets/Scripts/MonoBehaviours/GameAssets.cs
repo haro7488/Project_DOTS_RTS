@@ -14,5 +14,7 @@ namespace DotsRts.MonoBehaviours
         {
             Instance = this;
         }
+
+        public UnitTypeListSO UnitTypeListSO;
     }
 }
