@@ -87,6 +87,67 @@ namespace DotsRts.Systems
                 shootAttack.ValueRW.OnShoot.IsTriggered = true;
                 shootAttack.ValueRW.OnShoot.ShootFromPosition = bulletSpawnWorldPosition;
             }
+
+            foreach (var (localTransform,
+                         shootAttack,
+                         target,
+                         entity)
+                     in SystemAPI.Query<
+                             RefRW<LocalTransform>,
+                             RefRW<ShootAttack>,
+                             RefRO<Target>>()
+                         .WithEntityAccess())
+            {
+                if (target.ValueRO.TargetEntity == Entity.Null)
+                {
+                    continue;
+                }
+
+                var targetLocalTransform = SystemAPI.GetComponent<LocalTransform>(target.ValueRO.TargetEntity);
+
+                if (math.distance(localTransform.ValueRO.Position, targetLocalTransform.Position) >
+                    shootAttack.ValueRO.AttackDistance)
+                {
+                    continue;
+                }
+
+                if (SystemAPI.HasComponent<MoveOverride>(entity) && SystemAPI.IsComponentEnabled<MoveOverride>(entity))
+                {
+                    continue;
+                }
+
+                shootAttack.ValueRW.Timer -= SystemAPI.Time.DeltaTime;
+                if (shootAttack.ValueRO.Timer > 0f)
+                {
+                    continue;
+                }
+
+                shootAttack.ValueRW.Timer = shootAttack.ValueRO.TimerMax;
+
+                if (SystemAPI.HasComponent<TargetOverride>(target.ValueRO.TargetEntity))
+                {
+                    var enemyTargetOverride = SystemAPI.GetComponentRW<TargetOverride>(target.ValueRO.TargetEntity);
+                    if (enemyTargetOverride.ValueRO.TargetEntity == Entity.Null)
+                    {
+                        enemyTargetOverride.ValueRW.TargetEntity = entity;
+                    }
+                }
+
+                var bulletEntity = state.EntityManager.Instantiate(entitiesReferences.BulletPrefabEntity);
+                var bulletSpawnWorldPosition =
+                    localTransform.ValueRO.TransformPoint(shootAttack.ValueRO.BulletSpawnLocalPosition);
+
+                SystemAPI.SetComponent(bulletEntity, LocalTransform.FromPosition(bulletSpawnWorldPosition));
+
+                var bulletBullet = SystemAPI.GetComponentRW<Bullet>(bulletEntity);
+                bulletBullet.ValueRW.DamageAmount = shootAttack.ValueRO.DamageAmount;
+
+                var bulletTarget = SystemAPI.GetComponentRW<Target>(bulletEntity);
+                bulletTarget.ValueRW.TargetEntity = target.ValueRO.TargetEntity;
+
+                shootAttack.ValueRW.OnShoot.IsTriggered = true;
+                shootAttack.ValueRW.OnShoot.ShootFromPosition = bulletSpawnWorldPosition;
+            }
         }
     }
 }

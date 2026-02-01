@@ -12,8 +12,6 @@ namespace DotsRts.Systems
     {
         public void OnUpdate(ref SystemState state)
         {
-            Debug.Log(nameof(AnimationDataHolderBakingSystem));
-
             AnimationDataListSO animationDataListSo = null;
             foreach (var animationDataHolderObjectData in SystemAPI.Query<RefRO<AnimationDataHolderObjectData>>())
             {
