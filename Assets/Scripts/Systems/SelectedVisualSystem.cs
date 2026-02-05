@@ -13,16 +13,16 @@ namespace DotsRts.Systems
         {
             foreach (var selected in SystemAPI.Query<RefRO<Selected>>().WithPresent<Selected>())
             {
-                if (selected.ValueRO.OnSelected)
-                {
-                    var localTransform = SystemAPI.GetComponentRW<LocalTransform>(selected.ValueRO.VisualEntity);
-                    localTransform.ValueRW.Scale = selected.ValueRO.ShowScale;
-                }
-
                 if (selected.ValueRO.OnDeselected)
                 {
                     var localTransform = SystemAPI.GetComponentRW<LocalTransform>(selected.ValueRO.VisualEntity);
                     localTransform.ValueRW.Scale = 0f;
+                }
+
+                if (selected.ValueRO.OnSelected)
+                {
+                    var localTransform = SystemAPI.GetComponentRW<LocalTransform>(selected.ValueRO.VisualEntity);
+                    localTransform.ValueRW.Scale = selected.ValueRO.ShowScale;
                 }
             }
         }
