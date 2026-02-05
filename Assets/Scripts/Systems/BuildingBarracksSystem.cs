@@ -17,6 +17,25 @@ namespace DotsRts.Systems
         {
             var entitiesReferences = SystemAPI.GetSingleton<EntitiesReferences>();
 
+            foreach (var (buildingBarracks,
+                         spawnUnitTypeDynamicBuffer,
+                         buildingBarracksUnitEnqueue,
+                         buildingBarracksUnitEnqueueEnabled)
+                     in SystemAPI.Query<
+                         RefRW<BuildingBarracks>,
+                         DynamicBuffer<SpawnUnitTypeBuffer>,
+                         RefRO<BuildingBarracksUnitEnqueue>,
+                         EnabledRefRW<BuildingBarracksUnitEnqueue>>())
+            {
+                spawnUnitTypeDynamicBuffer.Add(new SpawnUnitTypeBuffer
+                {
+                    UnitType = buildingBarracksUnitEnqueue.ValueRO.UnitType,
+                });
+                buildingBarracksUnitEnqueueEnabled.ValueRW = false;
+                
+                buildingBarracks.ValueRW.OnUnitQueueChanged = true;
+            }
+
             foreach (var (localTransform,
                          buildingBarracks,
                          spawnUnitTypeDynamicBuffer)
@@ -25,9 +44,7 @@ namespace DotsRts.Systems
                          RefRW<BuildingBarracks>,
                          DynamicBuffer<SpawnUnitTypeBuffer>>())
             {
-                buildingBarracks.ValueRW.Progress += SystemAPI.Time.DeltaTime;
-
-                if (buildingBarracks.ValueRO.Progress < buildingBarracks.ValueRO.ProgressMax)
+                if (spawnUnitTypeDynamicBuffer.IsEmpty)
                 {
                     continue;
                 }
@@ -40,12 +57,21 @@ namespace DotsRts.Systems
                     buildingBarracks.ValueRW.ProgressMax = activeUnitTypeSo.ProgressMax;
                 }
 
+                buildingBarracks.ValueRW.Progress += SystemAPI.Time.DeltaTime;
+
+                if (buildingBarracks.ValueRO.Progress < buildingBarracks.ValueRO.ProgressMax)
+                {
+                    continue;
+                }
+
                 buildingBarracks.ValueRW.Progress = 0f;
 
                 var unitType = spawnUnitTypeDynamicBuffer[0].UnitType;
                 var unitTypeSo = GameAssets.Instance.UnitTypeListSO.GetUnitTypeSO(unitType);
 
                 spawnUnitTypeDynamicBuffer.RemoveAt(0);
+                buildingBarracks.ValueRW.OnUnitQueueChanged = true;
+
                 var spawnedUnitEntity = state.EntityManager.Instantiate(unitTypeSo.GetPrefabEntity(entitiesReferences));
                 SystemAPI.SetComponent(spawnedUnitEntity, LocalTransform.FromPosition(localTransform.ValueRO.Position));
 

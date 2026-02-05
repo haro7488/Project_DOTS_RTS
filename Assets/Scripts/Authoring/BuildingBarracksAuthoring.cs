@@ -19,21 +19,17 @@ namespace DotsRts
                     RallyPositionOffset = new float3(10, 0, 0)
                 });
 
-                var spawnUnitTypeDynamicBuffer = AddBuffer<SpawnUnitTypeBuffer>(entity);
-                spawnUnitTypeDynamicBuffer.Add(new SpawnUnitTypeBuffer
-                {
-                    UnitType = UnitType.Soldier,
-                });
-                spawnUnitTypeDynamicBuffer.Add(new SpawnUnitTypeBuffer
-                {
-                    UnitType = UnitType.Soldier,
-                });
-                spawnUnitTypeDynamicBuffer.Add(new SpawnUnitTypeBuffer
-                {
-                    UnitType = UnitType.Scout
-                });
+                AddBuffer<SpawnUnitTypeBuffer>(entity);
+
+                AddComponent(entity, new BuildingBarracksUnitEnqueue());
+                SetComponentEnabled<BuildingBarracksUnitEnqueue>(entity, false);
             }
         }
+    }
+
+    public struct BuildingBarracksUnitEnqueue : IComponentData, IEnableableComponent
+    {
+        public UnitType UnitType;
     }
 
     public struct BuildingBarracks : IComponentData
@@ -42,6 +38,7 @@ namespace DotsRts
         public float ProgressMax;
         public UnitType ActiveUnitType;
         public float3 RallyPositionOffset;
+        public bool OnUnitQueueChanged;
     }
 
     [InternalBufferCapacity(10)]

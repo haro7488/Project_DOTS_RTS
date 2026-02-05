@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace DotsRts.MonoBehaviours
 {
@@ -14,6 +15,7 @@ namespace DotsRts.MonoBehaviours
 
         public event EventHandler OnSelectionAreaStart;
         public event EventHandler OnSelectionAreaEnd;
+        public event EventHandler OnSelectedEntitiesChanged;
 
         private Vector2 _selectionStartMousePosition;
 
@@ -24,6 +26,11 @@ namespace DotsRts.MonoBehaviours
 
         private void Update()
         {
+            if(EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             if (Input.GetMouseButtonDown(0))
             {
                 _selectionStartMousePosition = Input.mousePosition;
@@ -102,6 +109,7 @@ namespace DotsRts.MonoBehaviours
                 }
 
                 OnSelectionAreaEnd?.Invoke(this, EventArgs.Empty);
+                OnSelectedEntitiesChanged?.Invoke(this, EventArgs.Empty);
             }
 
             if (Input.GetMouseButtonDown(1))

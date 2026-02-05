@@ -17,6 +17,7 @@ namespace DotsRts
     {
         public UnitType UnitType;
         public float ProgressMax;
+        public Sprite Sprite;
 
         public Entity GetPrefabEntity(EntitiesReferences entitiesReferences)
         {
