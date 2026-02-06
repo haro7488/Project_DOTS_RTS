@@ -7,7 +7,7 @@ namespace DotsRts.MonoBehaviours
     {
         public const int UNITS_LAYER = 6;
         public const int BUILDINGS_LAYER = 7;
-        
+
         public static GameAssets Instance { get; private set; }
 
         private void Awake()
@@ -16,5 +16,6 @@ namespace DotsRts.MonoBehaviours
         }
 
         public UnitTypeListSO UnitTypeListSO;
+        public BuildingTypeListSO BuildingTypeListSO;
     }
 }

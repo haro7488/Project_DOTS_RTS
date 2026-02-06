@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingTypeSO
   BuildingType: 2
   Prefab: {fileID: 6181445616671653367, guid: 26a1c7ceb6ab93d4ca065d67e5392435, type: 3}
+  BuildingDistanceMin: 10
+  ShowInBuildingPlacementManagerUI: 1
+  Sprite: {fileID: 21300000, guid: 251009f30697ae940904ab5c27e31833, type: 3}

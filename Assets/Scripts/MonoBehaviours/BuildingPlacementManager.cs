@@ -7,18 +7,69 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using BoxCollider = UnityEngine.BoxCollider;
+using Material = UnityEngine.Material;
 
 namespace DotsRts.MonoBehaviours
 {
     public class BuildingPlacementManager : MonoBehaviour
     {
-        [SerializeField] private BuildingTypeSO buildingTypeSo;
+        public static BuildingPlacementManager Instance { get; private set; }
+        public event EventHandler OnActiveBuildingTypeSOChanged;
+
+        [SerializeField] private BuildingTypeSO _buildingTypeSo;
+        [SerializeField] private Material _ghostMaterial;
+
+        private Transform _ghostTransform;
+
+        public BuildingTypeSO BuildingTypeSo
+        {
+            get => _buildingTypeSo;
+            set
+            {
+                _buildingTypeSo = value;
+                if (_ghostTransform != null)
+                {
+                    Destroy(_ghostTransform.gameObject);
+                }
+
+                if (!_buildingTypeSo.IsNone())
+                {
+                    _ghostTransform = Instantiate(_buildingTypeSo.VisualPrefab);
+                    foreach (var meshRenderer in _ghostTransform.GetComponentsInChildren<MeshRenderer>())
+                    {
+                        meshRenderer.material = _ghostMaterial;
+                    }
+                }
+
+                OnActiveBuildingTypeSOChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Update()
         {
+            if (_ghostTransform != null)
+            {
+                _ghostTransform.position = MouseWorldPosition.Instance.GetPosition();
+            }
+
             if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
+            }
+
+            if (_buildingTypeSo.IsNone())
+            {
+                return;
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                BuildingTypeSo = GameAssets.Instance.BuildingTypeListSO.None;
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -31,7 +82,7 @@ namespace DotsRts.MonoBehaviours
                     var entityQuery = entityManager.CreateEntityQuery(typeof(EntitiesReferences));
                     var entitiesReferences = entityQuery.GetSingleton<EntitiesReferences>();
 
-                    var spawnedEntity = entityManager.Instantiate(entitiesReferences.BuildingTowerPrefabEntity);
+                    var spawnedEntity = entityManager.Instantiate(_buildingTypeSo.GetPrefabEntity(entitiesReferences));
                     entityManager.SetComponentData(spawnedEntity, LocalTransform.FromPosition(mouseWorldPosition));
                 }
             }
@@ -52,7 +103,7 @@ namespace DotsRts.MonoBehaviours
                 GroupIndex = 0,
             };
 
-            var boxCollider = buildingTypeSo.Prefab.GetComponent<BoxCollider>();
+            var boxCollider = _buildingTypeSo.Prefab.GetComponent<BoxCollider>();
             var bonusExtents = 1.1f;
             var distanceHitList = new NativeList<DistanceHit>(Allocator.Temp);
             if (collisionWorld.OverlapBox(mouseWorldPosition, quaternion.identity,
@@ -63,7 +114,7 @@ namespace DotsRts.MonoBehaviours
 
             distanceHitList.Clear();
             if (collisionWorld.OverlapSphere(mouseWorldPosition,
-                    buildingTypeSo.BuildingDistanceMin,
+                    _buildingTypeSo.BuildingDistanceMin,
                     ref distanceHitList, collisionFilter))
             {
                 foreach (var distanceHit in distanceHitList)
@@ -72,7 +123,7 @@ namespace DotsRts.MonoBehaviours
                     {
                         var buildingTypeSoHolder =
                             entityManager.GetComponentData<BuildingTypeSOHolder>(distanceHit.Entity);
-                        if (buildingTypeSoHolder.BuildingType == buildingTypeSo.BuildingType)
+                        if (buildingTypeSoHolder.BuildingType == _buildingTypeSo.BuildingType)
                         {
                             // Same type too close
                             return false;

@@ -30,6 +30,11 @@ namespace DotsRts.MonoBehaviours
             {
                 return;
             }
+
+            if (!BuildingPlacementManager.Instance.BuildingTypeSo.IsNone())
+            {
+                return;
+            }
             
             if (Input.GetMouseButtonDown(0))
             {

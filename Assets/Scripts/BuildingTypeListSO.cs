@@ -8,6 +8,8 @@ namespace DotsRts
     public class BuildingTypeListSO : ScriptableObject
     {
         public List<BuildingTypeSO> BuildingTypeSOList;
+
+        public BuildingTypeSO None;
         
         public BuildingTypeSO GetBuildingTypeSO(BuildingType buildingType)
         {
