@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Barracks
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingTypeSO
   BuildingType: 3
+  Prefab: {fileID: 7781709161523091281, guid: 0a5d672ce03a61047a6f7b61e7c01776, type: 3}

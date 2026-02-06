@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingTypeListSO
   BuildingTypeSOList:
   - {fileID: 11400000, guid: 33603f80c74f11d4885c872bfe0cd0e3, type: 2}
-  - {fileID: 11400000, guid: 44bda33f13cc9594fbaed6268b7f011e, type: 2}
+  - {fileID: 11400000, guid: e6bb2af31c05d964b89e628460ed8f48, type: 2}
   - {fileID: 11400000, guid: 958371afaaf505a46b04c683b734d488, type: 2}
   - {fileID: 11400000, guid: 44bda33f13cc9594fbaed6268b7f011e, type: 2}

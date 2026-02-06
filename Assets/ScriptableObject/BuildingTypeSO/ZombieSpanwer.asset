@@ -10,6 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0118cc5e2cd04b8994a96809d5eef2d1, type: 3}
-  m_Name: ZombieSpanwer 1
+  m_Name: ZombieSpanwer
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingTypeSO
   BuildingType: 1
+  Prefab: {fileID: 251481089882971211, guid: b0c879ac796710f44b6d7f39911500c7, type: 3}

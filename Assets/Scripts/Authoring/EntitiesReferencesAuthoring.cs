@@ -10,6 +10,8 @@ namespace DotsRts
         public GameObject ShootLightPrefabGameObject;
         public GameObject ScoutPrefabGameObject;
         public GameObject SoldierPrefabGameObject;
+        public GameObject BuildingTowerPrefabGameObject;
+        public GameObject BuildingBarracksPrefabGameObject;
 
         private class EntityReferencesAuthoringBaker : Baker<EntitiesReferencesAuthoring>
         {
@@ -23,6 +25,8 @@ namespace DotsRts
                     ShootLightPrefabEntity = GetEntity(authoring.ShootLightPrefabGameObject, TransformUsageFlags.Dynamic),
                     ScoutPrefabEntity = GetEntity(authoring.ScoutPrefabGameObject, TransformUsageFlags.Dynamic),
                     SoldierPrefabEntity = GetEntity(authoring.SoldierPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingTowerPrefabEntity = GetEntity(authoring.BuildingTowerPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingBarracksPrefabEntity = GetEntity(authoring.BuildingBarracksPrefabGameObject, TransformUsageFlags.Dynamic),
                 });
             }
         }
@@ -35,5 +39,8 @@ namespace DotsRts
         public Entity ShootLightPrefabEntity;
         public Entity ScoutPrefabEntity;
         public Entity SoldierPrefabEntity;
+
+        public Entity BuildingTowerPrefabEntity;
+        public Entity BuildingBarracksPrefabEntity;
     }
 }
