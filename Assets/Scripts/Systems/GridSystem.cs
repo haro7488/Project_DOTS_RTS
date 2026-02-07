@@ -4,6 +4,7 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using UnityEngine;
 
 namespace DotsRts.Systems
@@ -118,11 +119,32 @@ namespace DotsRts.Systems
                 }
             }
 
-            gridNodeNativeArray[CalculateIndex(5, 3, gridSystemData.Width)].ValueRW.Cost = WALL_COST;
-            gridNodeNativeArray[CalculateIndex(6, 3, gridSystemData.Width)].ValueRW.Cost = WALL_COST;
-            gridNodeNativeArray[CalculateIndex(7, 3, gridSystemData.Width)].ValueRW.Cost = WALL_COST;
-            gridNodeNativeArray[CalculateIndex(8, 3, gridSystemData.Width)].ValueRW.Cost = WALL_COST;
-            gridNodeNativeArray[CalculateIndex(9, 3, gridSystemData.Width)].ValueRW.Cost = WALL_COST;
+            var physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
+            var collisionWorld = physicsWorldSingleton.CollisionWorld;
+
+            var distanceHitList = new NativeList<DistanceHit>(Allocator.Temp);
+            for (int x = 0; x < gridSystemData.Width; x++)
+            {
+                for (int y = 0; y < gridSystemData.Height; y++)
+                {
+                    if (collisionWorld.OverlapSphere(
+                            GetWorldCenterPosition(x, y, gridSystemData.GridNodeSize),
+                            gridSystemData.GridNodeSize * 0.5f,
+                            ref distanceHitList,
+                            new CollisionFilter
+                            {
+                                BelongsTo = ~0u,
+                                CollidesWith = 1u << GameAssets.PATHFINDING_WALLS,
+                                GroupIndex = 0,
+                            }
+                        ))
+                    {
+                        // There is a wall in this grid position
+                        var index = CalculateIndex(x, y, gridSystemData.Width);
+                        gridNodeNativeArray[index].ValueRW.Cost = WALL_COST;
+                    }
+                }
+            }
 
             var gridNodeOpenQueue = new NativeQueue<RefRW<GridNode>>(Allocator.Temp);
             var targetGridNode = gridNodeNativeArray[CalculateIndex(_targetGridPosition, gridSystemData.Width)];
@@ -149,7 +171,7 @@ namespace DotsRts.Systems
                         // This is a wall
                         continue;
                     }
-                    
+
                     var newBestCost = (byte)(currentGridNode.ValueRO.BestCost + neighborGridNode.ValueRO.Cost);
                     if (newBestCost < neighborGridNode.ValueRO.BestCost)
                     {
@@ -278,6 +300,14 @@ namespace DotsRts.Systems
                 x * gridNodeSize,
                 0f,
                 y * gridNodeSize);
+        }
+
+        public static float3 GetWorldCenterPosition(int x, int y, float gridNodeSize)
+        {
+            return new float3(
+                x * gridNodeSize + gridNodeSize * 0.5f,
+                0f,
+                y * gridNodeSize + gridNodeSize * 0.5f);
         }
 
         public static int2 GetGridPosition(float3 worldPosition, float gridNodeSize)
