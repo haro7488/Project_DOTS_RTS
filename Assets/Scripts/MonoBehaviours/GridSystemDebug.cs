@@ -1,6 +1,7 @@
 ﻿using System;
 using DotsRts.Systems;
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace DotsRts.MonoBehaviours
@@ -9,6 +10,8 @@ namespace DotsRts.MonoBehaviours
     {
         public static GridSystemDebug Instance { get; private set; }
         [SerializeField] private Transform _debugPrefab;
+        [SerializeField] private Sprite _circleSprite;
+        [SerializeField] private Sprite _arrowSprite;
 
         private bool _isInit;
         private GridSystemDebugSingle[,] _gridSystemDebugSingleArray;
@@ -53,7 +56,31 @@ namespace DotsRts.MonoBehaviours
                     var index = GridSystem.CalculateIndex(x, y, gridSystemData.Width);
                     var gridNodeEntity = gridSystemData.GridMap.GridEntityArray[index];
                     var gridNode = entityManager.GetComponentData<GridSystem.GridNode>(gridNodeEntity);
-                    gridSystemDebugSingle.SetColor(gridNode.Data == 0 ? Color.white : Color.blue);
+
+                    if (gridNode.Cost == 0)
+                    {
+                        // This is the target
+                        gridSystemDebugSingle.SetSprite(_circleSprite);
+                        gridSystemDebugSingle.SetColor(Color.green);
+                    }
+                    else
+                    {
+                        if (gridNode.Cost == GridSystem.WALL_COST)
+                        {
+                            gridSystemDebugSingle.SetSprite(_circleSprite);
+                            gridSystemDebugSingle.SetColor(Color.black);
+                        }
+                        else
+                        {
+                            gridSystemDebugSingle.SetSprite(_arrowSprite);
+                            gridSystemDebugSingle.SetColor(Color.white);
+                            gridSystemDebugSingle.SetSpriteRotation(
+                                Quaternion.LookRotation(new float3(gridNode.Vector.x, 0f, gridNode.Vector.y),
+                                    Vector3.up));
+                        }
+                    }
+
+                    // gridSystemDebugSingle.SetColor(gridNode.Data == 0 ? Color.white : Color.blue);
                 }
             }
         }
