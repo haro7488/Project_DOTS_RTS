@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace DotsRts
 {
@@ -10,6 +12,7 @@ namespace DotsRts
         public static DOTSEventsManager Instance { get; private set; }
 
         public event EventHandler OnBarracksUnitQueueChanged;
+        public event EventHandler OnHQDead;
 
         private void Awake()
         {
@@ -22,6 +25,11 @@ namespace DotsRts
             {
                 OnBarracksUnitQueueChanged?.Invoke(entity, EventArgs.Empty);
             }
+        }
+        
+        public void TriggerOnHQDead()
+        {
+            OnHQDead?.Invoke(this, EventArgs.Empty);
         }
     }
 }

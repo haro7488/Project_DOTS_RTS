@@ -7,7 +7,7 @@ namespace DotsRts
     {
         public int HealthAmount = 1;
         public int HealthAmountMax = 1;
-        
+
         private class HealthAuthoringBaker : Baker<HealthAuthoring>
         {
             public override void Bake(HealthAuthoring authoring)
@@ -28,5 +28,6 @@ namespace DotsRts
         public int HealthAmount;
         public int HealthAmountMax;
         public bool OnHealthChanged;
+        public bool OnDead;
     }
 }

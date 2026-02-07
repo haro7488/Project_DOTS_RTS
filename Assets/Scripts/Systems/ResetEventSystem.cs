@@ -14,11 +14,21 @@ namespace DotsRts.Systems
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<BuildingHQ>();
             _jobHandleNativeArray = new NativeArray<JobHandle>(4, Allocator.Persistent);
         }
 
         public void OnUpdate(ref SystemState state)
         {
+            if (SystemAPI.HasSingleton<BuildingHQ>())
+            {
+                var hqHealth = SystemAPI.GetComponent<Health>(SystemAPI.GetSingletonEntity<BuildingHQ>());
+                if (hqHealth.OnDead)
+                {
+                    DOTSEventsManager.Instance.TriggerOnHQDead();
+                }
+            }
+            
             _jobHandleNativeArray[0] = new ResetShootAttackEventsJob().ScheduleParallel(state.Dependency);
             _jobHandleNativeArray[1] = new ResetHealthEventsJob().ScheduleParallel(state.Dependency);
             _jobHandleNativeArray[2] = new ResetSelectedEventsJob().ScheduleParallel(state.Dependency);
@@ -51,6 +61,7 @@ namespace DotsRts.Systems
         public void Execute(ref Health health)
         {
             health.OnHealthChanged = false;
+            health.OnDead = false;
         }
     }
 

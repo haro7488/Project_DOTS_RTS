@@ -10,6 +10,7 @@ namespace DotsRts
         ZombieSpawner,
         Tower,
         Barracks,
+        HQ,
     }
 
     [CreateAssetMenu]

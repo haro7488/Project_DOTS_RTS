@@ -20,10 +20,11 @@ namespace DotsRts.Systems
             foreach (var (health,
                          entity)
                      in SystemAPI.Query<
-                         RefRO<Health>>().WithEntityAccess())
+                         RefRW<Health>>().WithEntityAccess())
             {
                 if (health.ValueRO.HealthAmount <= 0)
                 {
+                    health.ValueRW.OnDead = true;
                     entityCommandBuffer.DestroyEntity(entity);
                 }
             }
