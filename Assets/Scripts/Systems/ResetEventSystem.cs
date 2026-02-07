@@ -10,12 +10,14 @@ namespace DotsRts.Systems
     public partial struct ResetEventSystem : ISystem
     {
         private NativeArray<JobHandle> _jobHandleNativeArray;
+        private NativeList<Entity> _onBarracksUnitQueueChangedEntityList;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<BuildingHQ>();
             _jobHandleNativeArray = new NativeArray<JobHandle>(4, Allocator.Persistent);
+            _onBarracksUnitQueueChangedEntityList = new NativeList<Entity>(Allocator.Persistent);
         }
 
         public void OnUpdate(ref SystemState state)
@@ -28,21 +30,27 @@ namespace DotsRts.Systems
                     DOTSEventsManager.Instance.TriggerOnHQDead();
                 }
             }
-            
+
             _jobHandleNativeArray[0] = new ResetShootAttackEventsJob().ScheduleParallel(state.Dependency);
             _jobHandleNativeArray[1] = new ResetHealthEventsJob().ScheduleParallel(state.Dependency);
             _jobHandleNativeArray[2] = new ResetSelectedEventsJob().ScheduleParallel(state.Dependency);
             _jobHandleNativeArray[3] = new ResetMeleeAttackEventsJob().ScheduleParallel(state.Dependency);
 
-            var onBarracksUnitQueueChangedEntityList = new NativeList<Entity>(Allocator.TempJob);
+            _onBarracksUnitQueueChangedEntityList.Clear();
             new ResetBuildingBarracksEventsJob
             {
-                OnUnitQueueChangedEntityList = onBarracksUnitQueueChangedEntityList.AsParallelWriter(),
+                OnUnitQueueChangedEntityList = _onBarracksUnitQueueChangedEntityList.AsParallelWriter(),
             }.ScheduleParallel(state.Dependency).Complete();
 
-            DOTSEventsManager.Instance.TriggerOnBarracksUnitQueueChanged(onBarracksUnitQueueChangedEntityList);
+            DOTSEventsManager.Instance.TriggerOnBarracksUnitQueueChanged(_onBarracksUnitQueueChangedEntityList);
 
             state.Dependency = JobHandle.CombineDependencies(_jobHandleNativeArray);
+        }
+
+        public void OnDestroy(ref SystemState state)
+        {
+            _jobHandleNativeArray.Dispose();
+            _onBarracksUnitQueueChangedEntityList.Dispose();
         }
     }
 

@@ -75,6 +75,7 @@ namespace DotsRts.MonoBehaviours
                 _targetFieldOfView += zoomAmount;
             }
 
+            
             _targetFieldOfView = Mathf.Clamp(_targetFieldOfView, _fieldOfViewMin, _fieldOfViewMax);
             var zoomSpeed = 10f;
             _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(_cinemachineCamera.Lens.FieldOfView,
