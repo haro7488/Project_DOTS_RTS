@@ -21,14 +21,19 @@ namespace DotsRts.Systems
             foreach (var (localTransform,
                          shootAttack,
                          target,
+                         targetPositionPathQueued,
+                         targetPositionPathQueuedEnabled,
                          unitMover,
                          entity)
                      in SystemAPI.Query<
                              RefRW<LocalTransform>,
                              RefRW<ShootAttack>,
                              RefRO<Target>,
+                             RefRW<TargetPositionPathQueued>,
+                             EnabledRefRW<TargetPositionPathQueued>,
                              RefRW<UnitMover>>()
                          .WithDisabled<MoveOverride>()
+                         .WithPresent<TargetPositionPathQueued>()
                          .WithEntityAccess())
             {
                 if (target.ValueRO.TargetEntity == Entity.Null)
@@ -41,16 +46,19 @@ namespace DotsRts.Systems
                 if (math.distance(localTransform.ValueRO.Position, targetLocalTransform.Position) >
                     shootAttack.ValueRO.AttackDistance)
                 {
-                    unitMover.ValueRW.TargetPosition = targetLocalTransform.Position;
+                    targetPositionPathQueued.ValueRW.TargetPosition = targetLocalTransform.Position;
+                    targetPositionPathQueuedEnabled.ValueRW = true;
                     continue;
                 }
                 else
                 {
-                    unitMover.ValueRW.TargetPosition = localTransform.ValueRO.Position;
+                    targetPositionPathQueued.ValueRW.TargetPosition = localTransform.ValueRO.Position;
+                    targetPositionPathQueuedEnabled.ValueRW = true;
                 }
 
                 var aimDirection = targetLocalTransform.Position - localTransform.ValueRO.Position;
                 aimDirection = math.normalize(aimDirection);
+                
                 var targetRotation = quaternion.LookRotationSafe(aimDirection, math.up());
                 localTransform.ValueRW.Rotation = math.slerp(localTransform.ValueRO.Rotation, targetRotation,
                     SystemAPI.Time.DeltaTime * unitMover.ValueRO.RotationSpeed);

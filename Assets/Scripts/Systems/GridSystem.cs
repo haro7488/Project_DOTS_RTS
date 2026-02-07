@@ -12,6 +12,7 @@ namespace DotsRts.Systems
     public partial struct GridSystem : ISystem
     {
         public const int WALL_COST = byte.MaxValue;
+        public const int HEAVY_COST = 50;
         public const int FLOW_FIELD_MAP_COUNT = 50;
 
         public struct GridSystemData : IComponentData
@@ -21,6 +22,7 @@ namespace DotsRts.Systems
             public float GridNodeSize;
             public NativeArray<GridMap> GridMapArray;
             public int NextGridIndex;
+            public NativeArray<byte> CostMap;
         }
 
         public struct GridMap
@@ -36,7 +38,7 @@ namespace DotsRts.Systems
             public int X;
             public int Y;
             public byte Cost;
-            public byte BestCost;
+            public int BestCost;
             public float2 Vector;
         }
 
@@ -92,6 +94,7 @@ namespace DotsRts.Systems
                     Height = height,
                     GridNodeSize = gridNodeSize,
                     GridMapArray = gridMapArray,
+                    CostMap = new NativeArray<byte>(totalCount, Allocator.Persistent),
                 }
             );
         }
@@ -169,7 +172,7 @@ namespace DotsRts.Systems
                         else
                         {
                             gridNode.ValueRW.Cost = 1;
-                            gridNode.ValueRW.BestCost = byte.MaxValue;
+                            gridNode.ValueRW.BestCost = int.MaxValue;
                         }
                     }
                 }
@@ -197,6 +200,25 @@ namespace DotsRts.Systems
                             // There is a wall in this grid position
                             var index = CalculateIndex(x, y, gridSystemData.Width);
                             gridNodeNativeArray[index].ValueRW.Cost = WALL_COST;
+                            gridSystemData.CostMap[index] = WALL_COST;
+                        }
+
+                        if (collisionWorld.OverlapSphere(
+                                GetWorldCenterPosition(x, y, gridSystemData.GridNodeSize),
+                                gridSystemData.GridNodeSize * 0.5f,
+                                ref distanceHitList,
+                                new CollisionFilter
+                                {
+                                    BelongsTo = ~0u,
+                                    CollidesWith = 1u << GameAssets.PATHFINDING_HEAVY,
+                                    GroupIndex = 0,
+                                }
+                            ))
+                        {
+                            // There is a wall in this grid position
+                            var index = CalculateIndex(x, y, gridSystemData.Width);
+                            gridNodeNativeArray[index].ValueRW.Cost = HEAVY_COST;
+                            gridSystemData.CostMap[index] = HEAVY_COST;
                         }
                     }
                 }
@@ -229,7 +251,7 @@ namespace DotsRts.Systems
                             continue;
                         }
 
-                        var newBestCost = (byte)(currentGridNode.ValueRO.BestCost + neighborGridNode.ValueRO.Cost);
+                        var newBestCost = currentGridNode.ValueRO.BestCost + neighborGridNode.ValueRO.Cost;
                         if (newBestCost < neighborGridNode.ValueRO.BestCost)
                         {
                             neighborGridNode.ValueRW.BestCost = newBestCost;
@@ -294,6 +316,7 @@ namespace DotsRts.Systems
             }
 
             gridSystemData.ValueRW.GridMapArray.Dispose();
+            gridSystemData.ValueRW.CostMap.Dispose();
         }
 
         public static NativeList<RefRW<GridNode>> GetNeighborGridNodeList(
@@ -411,6 +434,18 @@ namespace DotsRts.Systems
         public static bool IsWall(GridNode gridNode)
         {
             return gridNode.Cost == WALL_COST;
+        }
+
+        public static bool IsWall(int2 gridPosition, GridSystemData gridSystemData)
+        {
+            return gridSystemData.CostMap[CalculateIndex(gridPosition, gridSystemData.Width)] == WALL_COST;
+        }
+
+        public static bool IsValidWalkableGridPosition(float3 worldPosition, GridSystemData gridSystemData)
+        {
+            var gridPosition = GetGridPosition(worldPosition, gridSystemData.GridNodeSize);
+            return IsValidGridPosition(gridPosition, gridSystemData.Width, gridSystemData.Height) &&
+                   !IsWall(gridPosition, gridSystemData);
         }
     }
 }

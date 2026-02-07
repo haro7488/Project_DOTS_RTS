@@ -11,11 +11,13 @@ namespace DotsRts.Systems
         public void OnUpdate(ref SystemState state)
         {
             foreach (var (randomWalking,
-                         unitMover,
+                         targetPositionPathQueued,
+                         targetPositionPathQueuedEnabled,
                          localTransform)
                      in SystemAPI.Query<
                          RefRW<RandomWalking>,
-                         RefRW<UnitMover>,
+                         RefRW<TargetPositionPathQueued>,
+                         EnabledRefRW<TargetPositionPathQueued>,
                          RefRO<LocalTransform>>())
             {
                 if (math.distancesq(localTransform.ValueRO.Position, randomWalking.ValueRO.TargetPosition)
@@ -29,12 +31,13 @@ namespace DotsRts.Systems
                         randomWalking.ValueRO.OriginPosition +
                         randomDirection * random.NextFloat(randomWalking.ValueRO.DistanceMin,
                             randomWalking.ValueRO.DistanceMax);
-                    
+
                     randomWalking.ValueRW.Random = random;
                 }
                 else
                 {
-                    unitMover.ValueRW.TargetPosition = randomWalking.ValueRO.TargetPosition;
+                    targetPositionPathQueued.ValueRW.TargetPosition = randomWalking.ValueRO.TargetPosition;
+                    targetPositionPathQueuedEnabled.ValueRW = true;
                 }
             }
         }

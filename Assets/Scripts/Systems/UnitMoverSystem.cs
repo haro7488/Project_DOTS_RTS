@@ -29,14 +29,19 @@ namespace DotsRts.Systems
                          targetPositionPathQueuedEnabled,
                          flowFieldPathRequest,
                          flowFieldPathRequestEnabled,
-                         unitMover)
+                         flowFieldFollowerEnabled,
+                         unitMover,
+                         entity)
                      in SystemAPI.Query<
-                         RefRO<LocalTransform>,
-                         RefRW<TargetPositionPathQueued>,
-                         EnabledRefRW<TargetPositionPathQueued>,
-                         RefRW<FlowFieldPathRequest>,
-                         EnabledRefRW<FlowFieldPathRequest>,
-                         RefRW<UnitMover>>().WithPresent<FlowFieldPathRequest>())
+                             RefRO<LocalTransform>,
+                             RefRW<TargetPositionPathQueued>,
+                             EnabledRefRW<TargetPositionPathQueued>,
+                             RefRW<FlowFieldPathRequest>,
+                             EnabledRefRW<FlowFieldPathRequest>,
+                             EnabledRefRW<FlowFieldFollower>,
+                             RefRW<UnitMover>>()
+                         .WithPresent<FlowFieldPathRequest, FlowFieldFollower>()
+                         .WithEntityAccess())
             {
                 var raycastInput = new RaycastInput
                 {
@@ -53,11 +58,31 @@ namespace DotsRts.Systems
                 if (!collisionWorld.CastRay(raycastInput))
                 {
                     unitMover.ValueRW.TargetPosition = targetPositionPathQueued.ValueRO.TargetPosition;
+                    flowFieldPathRequestEnabled.ValueRW = false;
+                    flowFieldFollowerEnabled.ValueRW = false;
                 }
                 else
                 {
-                    flowFieldPathRequest.ValueRW.TargetPosition = targetPositionPathQueued.ValueRO.TargetPosition;
-                    flowFieldPathRequestEnabled.ValueRW = true;
+                    if (SystemAPI.HasComponent<MoveOverride>(entity))
+                    {
+                        SystemAPI.SetComponentEnabled<MoveOverride>(entity, false);
+                    }
+
+                    if (GridSystem.IsValidWalkableGridPosition(targetPositionPathQueued.ValueRO.TargetPosition,
+                            gridSystemData))
+                    {
+                        flowFieldPathRequest.ValueRW.TargetPosition =
+                            targetPositionPathQueued.ValueRO.TargetPosition;
+                        flowFieldPathRequestEnabled.ValueRW = true;
+                    }
+                    else
+                    {
+                        unitMover.ValueRW.TargetPosition = localTransform.ValueRO.Position;
+                        flowFieldPathRequest.ValueRW.TargetPosition =
+                            targetPositionPathQueued.ValueRO.TargetPosition;
+                        flowFieldPathRequestEnabled.ValueRW = false;
+                        flowFieldFollowerEnabled.ValueRW = false;
+                    }
                 }
 
                 targetPositionPathQueuedEnabled.ValueRW = false;

@@ -13,19 +13,22 @@ namespace DotsRts.Systems
             var hqPosition = SystemAPI.GetComponent<LocalTransform>(hqEntity).Position;
 
             foreach (var (enemyAttackHQ,
-                         unitMover,
+                         targetPositionPathQueued,
+                         targetPositionPathQueuedEnabled,
                          target)
                      in SystemAPI.Query<
                          RefRO<EnemyAttackHQ>,
-                         RefRW<UnitMover>,
-                         RefRO<Target>>().WithDisabled<MoveOverride>())
+                         RefRW<TargetPositionPathQueued>,
+                         EnabledRefRW<TargetPositionPathQueued>,
+                         RefRO<Target>>().WithDisabled<MoveOverride>().WithPresent<TargetPositionPathQueued>())
             {
                 if (target.ValueRO.TargetEntity != Entity.Null)
                 {
                     continue;
                 }
 
-                unitMover.ValueRW.TargetPosition = hqPosition;
+                targetPositionPathQueued.ValueRW.TargetPosition = hqPosition;
+                targetPositionPathQueuedEnabled.ValueRW = true;
             }
         }
     }

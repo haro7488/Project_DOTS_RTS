@@ -27,12 +27,15 @@ namespace DotsRts.Systems
             foreach (var (localTransform,
                          meleeAttack,
                          target,
-                         unitMover)
+                         targetPositionPathQueued,
+                         targetPositionPathQueuedEnabled)
                      in SystemAPI.Query<
-                         RefRO<LocalTransform>,
-                         RefRW<MeleeAttack>,
-                         RefRO<Target>,
-                         RefRW<UnitMover>>().WithDisabled<MoveOverride>())
+                             RefRO<LocalTransform>,
+                             RefRW<MeleeAttack>,
+                             RefRO<Target>,
+                             RefRW<TargetPositionPathQueued>,
+                             EnabledRefRW<TargetPositionPathQueued>>()
+                         .WithDisabled<MoveOverride>().WithPresent<TargetPositionPathQueued>())
             {
                 if (target.ValueRO.TargetEntity == Entity.Null)
                 {
@@ -44,7 +47,7 @@ namespace DotsRts.Systems
                 var isCloseEnoughToAttack =
                     math.distancesq(localTransform.ValueRO.Position, targetLocalTransform.Position) <
                     meleeAttackDistanceSq;
-                
+
                 var isTouchingTarget = false;
                 if (!isCloseEnoughToAttack)
                 {
@@ -75,11 +78,14 @@ namespace DotsRts.Systems
 
                 if (!isCloseEnoughToAttack && !isTouchingTarget)
                 {
-                    unitMover.ValueRW.TargetPosition = targetLocalTransform.Position;
+                    targetPositionPathQueued.ValueRW.TargetPosition = targetLocalTransform.Position;
+                    targetPositionPathQueuedEnabled.ValueRW = true;
                 }
                 else
                 {
-                    unitMover.ValueRW.TargetPosition = localTransform.ValueRO.Position;
+                    targetPositionPathQueued.ValueRW.TargetPosition = localTransform.ValueRO.Position;
+                    targetPositionPathQueuedEnabled.ValueRW = true;
+                    
                     meleeAttack.ValueRW.Timer -= SystemAPI.Time.DeltaTime;
                     if (meleeAttack.ValueRO.Timer > 0f)
                     {
@@ -91,7 +97,7 @@ namespace DotsRts.Systems
                     var targetHealth = SystemAPI.GetComponentRW<Health>(target.ValueRO.TargetEntity);
                     targetHealth.ValueRW.HealthAmount -= meleeAttack.ValueRO.DamageAmount;
                     targetHealth.ValueRW.OnHealthChanged = true;
-                    
+
                     meleeAttack.ValueRW.OnAttacked = true;
                 }
             }
