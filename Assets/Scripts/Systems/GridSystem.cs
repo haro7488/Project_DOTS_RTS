@@ -26,6 +26,8 @@ namespace DotsRts.Systems
         public struct GridMap
         {
             public NativeArray<Entity> GridEntityArray;
+            public int2 TargetGridPosition;
+            public bool IsValid;
         }
 
         public struct GridNode : IComponentData
@@ -57,6 +59,7 @@ namespace DotsRts.Systems
             for (int i = 0; i < FLOW_FIELD_MAP_COUNT; i++)
             {
                 var gridMap = new GridMap();
+                gridMap.IsValid = false;
                 gridMap.GridEntityArray = new NativeArray<Entity>(totalCount, Allocator.Persistent);
 
                 state.EntityManager.Instantiate(gridNodeEntityPrefab, gridMap.GridEntityArray);
@@ -114,6 +117,26 @@ namespace DotsRts.Systems
                     gridSystemData.GridNodeSize);
 
                 FlowFieldPathRequestEnabled.ValueRW = false;
+
+                var alreadyCalculatedPath = false;
+                for (int i = 0; i < FLOW_FIELD_MAP_COUNT; i++)
+                {
+                    if (gridSystemData.GridMapArray[i].IsValid &&
+                        gridSystemData.GridMapArray[i].TargetGridPosition.Equals(targetGridPosition))
+                    {
+                        flowFieldFollower.ValueRW.GridIndex = i;
+                        flowFieldFollower.ValueRW.TargetPosition = flowFieldPathRequest.ValueRO.TargetPosition;
+                        FlowFieldFollowerEnabled.ValueRW = true;
+
+                        alreadyCalculatedPath = true;
+                        break;
+                    }
+                }
+
+                if (alreadyCalculatedPath)
+                {
+                    continue;
+                }
 
                 var gridIndex = gridSystemData.NextGridIndex;
                 gridSystemData.NextGridIndex = (gridSystemData.NextGridIndex + 1) % FLOW_FIELD_MAP_COUNT;
@@ -223,6 +246,12 @@ namespace DotsRts.Systems
 
                 gridNodeOpenQueue.Dispose();
                 gridNodeNativeArray.Dispose();
+
+                var gridMap = gridSystemData.GridMapArray[gridIndex];
+                gridMap.TargetGridPosition = targetGridPosition;
+                gridMap.IsValid = true;
+                gridSystemData.GridMapArray[gridIndex] = gridMap;
+                SystemAPI.SetComponent(state.SystemHandle, gridSystemData);
             }
 
             if (Input.GetMouseButtonDown(0))

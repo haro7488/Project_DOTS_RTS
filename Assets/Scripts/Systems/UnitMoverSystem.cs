@@ -1,4 +1,5 @@
-﻿using Unity.Burst;
+﻿using DotsRts.MonoBehaviours;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
@@ -19,6 +20,49 @@ namespace DotsRts.Systems
         public void OnUpdate(ref SystemState state)
         {
             var gridSystemData = SystemAPI.GetSingleton<GridSystem.GridSystemData>();
+
+            var physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
+            var collisionWorld = physicsWorldSingleton.CollisionWorld;
+
+            foreach (var (localTransform,
+                         targetPositionPathQueued,
+                         targetPositionPathQueuedEnabled,
+                         flowFieldPathRequest,
+                         flowFieldPathRequestEnabled,
+                         unitMover)
+                     in SystemAPI.Query<
+                         RefRO<LocalTransform>,
+                         RefRW<TargetPositionPathQueued>,
+                         EnabledRefRW<TargetPositionPathQueued>,
+                         RefRW<FlowFieldPathRequest>,
+                         EnabledRefRW<FlowFieldPathRequest>,
+                         RefRW<UnitMover>>().WithPresent<FlowFieldPathRequest>())
+            {
+                var raycastInput = new RaycastInput
+                {
+                    Start = localTransform.ValueRO.Position,
+                    End = targetPositionPathQueued.ValueRO.TargetPosition,
+                    Filter = new CollisionFilter
+                    {
+                        BelongsTo = ~0u,
+                        CollidesWith = 1u << GameAssets.PATHFINDING_WALLS,
+                        GroupIndex = 0
+                    }
+                };
+
+                if (!collisionWorld.CastRay(raycastInput))
+                {
+                    unitMover.ValueRW.TargetPosition = targetPositionPathQueued.ValueRO.TargetPosition;
+                }
+                else
+                {
+                    flowFieldPathRequest.ValueRW.TargetPosition = targetPositionPathQueued.ValueRO.TargetPosition;
+                    flowFieldPathRequestEnabled.ValueRW = true;
+                }
+
+                targetPositionPathQueuedEnabled.ValueRW = false;
+            }
+
             foreach (var (localTransform,
                          flowFieldFollower,
                          flowFieldFollowerEnabled,
@@ -55,6 +99,24 @@ namespace DotsRts.Systems
                 {
                     // Target destination
                     unitMover.ValueRW.TargetPosition = localTransform.ValueRO.Position;
+                    flowFieldFollowerEnabled.ValueRW = false;
+                }
+
+                var raycastInput = new RaycastInput
+                {
+                    Start = localTransform.ValueRO.Position,
+                    End = flowFieldFollower.ValueRO.TargetPosition,
+                    Filter = new CollisionFilter
+                    {
+                        BelongsTo = ~0u,
+                        CollidesWith = 1u << GameAssets.PATHFINDING_WALLS,
+                        GroupIndex = 0
+                    }
+                };
+
+                if (!collisionWorld.CastRay(raycastInput))
+                {
+                    unitMover.ValueRW.TargetPosition = flowFieldFollower.ValueRO.TargetPosition;
                     flowFieldFollowerEnabled.ValueRW = false;
                 }
             }
