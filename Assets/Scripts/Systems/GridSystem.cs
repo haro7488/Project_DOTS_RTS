@@ -12,13 +12,15 @@ namespace DotsRts.Systems
     public partial struct GridSystem : ISystem
     {
         public const int WALL_COST = byte.MaxValue;
+        public const int FLOW_FIELD_MAP_COUNT = 50;
 
         public struct GridSystemData : IComponentData
         {
             public int Width;
             public int Height;
             public float GridNodeSize;
-            public GridMap GridMap;
+            public NativeArray<GridMap> GridMapArray;
+            public int NextGridIndex;
         }
 
         public struct GridMap
@@ -36,13 +38,13 @@ namespace DotsRts.Systems
             public float2 Vector;
         }
 
-        private int2 _targetGridPosition;
-
 #if !GRID_DEBUG
         [BurstCompile]
 #endif
         public void OnCreate(ref SystemState state)
         {
+            state.RequireForUpdate<PhysicsWorldSingleton>();
+
             var width = 20;
             var height = 10;
             var gridNodeSize = 5f;
@@ -51,26 +53,32 @@ namespace DotsRts.Systems
             var gridNodeEntityPrefab = state.EntityManager.CreateEntity();
             state.EntityManager.AddComponent<GridNode>(gridNodeEntityPrefab);
 
-            var gridMap = new GridMap();
-            gridMap.GridEntityArray = new NativeArray<Entity>(totalCount, Allocator.Persistent);
-
-            state.EntityManager.Instantiate(gridNodeEntityPrefab, gridMap.GridEntityArray);
-            for (int x = 0; x < width; x++)
+            var gridMapArray = new NativeArray<GridMap>(FLOW_FIELD_MAP_COUNT, Allocator.Persistent);
+            for (int i = 0; i < FLOW_FIELD_MAP_COUNT; i++)
             {
-                for (int y = 0; y < height; y++)
+                var gridMap = new GridMap();
+                gridMap.GridEntityArray = new NativeArray<Entity>(totalCount, Allocator.Persistent);
+
+                state.EntityManager.Instantiate(gridNodeEntityPrefab, gridMap.GridEntityArray);
+                for (int x = 0; x < width; x++)
                 {
-                    var index = CalculateIndex(x, y, width);
-                    var gridNode = new GridNode
+                    for (int y = 0; y < height; y++)
                     {
-                        Index = index,
-                        X = x,
-                        Y = y,
-                    };
+                        var index = CalculateIndex(x, y, width);
+                        var gridNode = new GridNode
+                        {
+                            Index = index,
+                            X = x,
+                            Y = y,
+                        };
 #if GRID_DEBUG
-                    state.EntityManager.SetName(gridMap.GridEntityArray[index], $"GridNode_{x}_{y}");
+                        state.EntityManager.SetName(gridMap.GridEntityArray[index], $"GridNode_{x}_{y}");
 #endif
-                    SystemAPI.SetComponent(gridMap.GridEntityArray[index], gridNode);
+                        SystemAPI.SetComponent(gridMap.GridEntityArray[index], gridNode);
+                    }
                 }
+
+                gridMapArray[i] = gridMap;
             }
 
             state.EntityManager.AddComponent<GridSystemData>(state.SystemHandle);
@@ -80,7 +88,7 @@ namespace DotsRts.Systems
                     Width = width,
                     Height = height,
                     GridNodeSize = gridNodeSize,
-                    GridMap = gridMap,
+                    GridMapArray = gridMapArray,
                 }
             );
         }
@@ -92,103 +100,130 @@ namespace DotsRts.Systems
         {
             var gridSystemData = SystemAPI.GetComponent<GridSystemData>(state.SystemHandle);
 
-            var gridNodeNativeArray = new NativeArray<RefRW<GridNode>>(
-                gridSystemData.Width * gridSystemData.Height, Allocator.Temp);
-
-            for (int x = 0; x < gridSystemData.Width; x++)
+            foreach (var (flowFieldPathRequest,
+                         FlowFieldPathRequestEnabled,
+                         flowFieldFollower,
+                         FlowFieldFollowerEnabled)
+                     in SystemAPI.Query<
+                         RefRW<FlowFieldPathRequest>,
+                         EnabledRefRW<FlowFieldPathRequest>,
+                         RefRW<FlowFieldFollower>,
+                         EnabledRefRW<FlowFieldFollower>>().WithPresent<FlowFieldFollower>())
             {
-                for (int y = 0; y < gridSystemData.Height; y++)
+                var targetGridPosition = GetGridPosition(flowFieldPathRequest.ValueRO.TargetPosition,
+                    gridSystemData.GridNodeSize);
+
+                FlowFieldPathRequestEnabled.ValueRW = false;
+
+                var gridIndex = gridSystemData.NextGridIndex;
+                gridSystemData.NextGridIndex = (gridSystemData.NextGridIndex + 1) % FLOW_FIELD_MAP_COUNT;
+                SystemAPI.SetComponent(state.SystemHandle, gridSystemData);
+
+                Debug.Log($"Calculating Path to {targetGridPosition} :: {gridIndex}");
+                flowFieldFollower.ValueRW.GridIndex = gridIndex;
+                flowFieldFollower.ValueRW.TargetPosition = flowFieldPathRequest.ValueRO.TargetPosition;
+                FlowFieldFollowerEnabled.ValueRW = true;
+
+                var gridNodeNativeArray = new NativeArray<RefRW<GridNode>>(
+                    gridSystemData.Width * gridSystemData.Height, Allocator.Temp);
+
+                for (int x = 0; x < gridSystemData.Width; x++)
                 {
-                    var index = CalculateIndex(x, y, gridSystemData.Width);
-                    var gridNodeEntity = gridSystemData.GridMap.GridEntityArray[index];
-                    var gridNode = SystemAPI.GetComponentRW<GridNode>(gridNodeEntity);
-
-                    gridNodeNativeArray[index] = gridNode;
-                    gridNode.ValueRW.Vector = new float2(0, 1);
-                    if (x == _targetGridPosition.x && y == _targetGridPosition.y)
+                    for (int y = 0; y < gridSystemData.Height; y++)
                     {
-                        // This is the target destination
-                        gridNode.ValueRW.Cost = 0;
-                        gridNode.ValueRW.BestCost = 0;
-                    }
-                    else
-                    {
-                        gridNode.ValueRW.Cost = 1;
-                        gridNode.ValueRW.BestCost = byte.MaxValue;
-                    }
-                }
-            }
-
-            var physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
-            var collisionWorld = physicsWorldSingleton.CollisionWorld;
-
-            var distanceHitList = new NativeList<DistanceHit>(Allocator.Temp);
-            for (int x = 0; x < gridSystemData.Width; x++)
-            {
-                for (int y = 0; y < gridSystemData.Height; y++)
-                {
-                    if (collisionWorld.OverlapSphere(
-                            GetWorldCenterPosition(x, y, gridSystemData.GridNodeSize),
-                            gridSystemData.GridNodeSize * 0.5f,
-                            ref distanceHitList,
-                            new CollisionFilter
-                            {
-                                BelongsTo = ~0u,
-                                CollidesWith = 1u << GameAssets.PATHFINDING_WALLS,
-                                GroupIndex = 0,
-                            }
-                        ))
-                    {
-                        // There is a wall in this grid position
                         var index = CalculateIndex(x, y, gridSystemData.Width);
-                        gridNodeNativeArray[index].ValueRW.Cost = WALL_COST;
+                        var gridNodeEntity = gridSystemData.GridMapArray[gridIndex].GridEntityArray[index];
+                        var gridNode = SystemAPI.GetComponentRW<GridNode>(gridNodeEntity);
+
+                        gridNodeNativeArray[index] = gridNode;
+                        gridNode.ValueRW.Vector = new float2(0, 1);
+                        if (x == targetGridPosition.x && y == targetGridPosition.y)
+                        {
+                            // This is the target destination
+                            gridNode.ValueRW.Cost = 0;
+                            gridNode.ValueRW.BestCost = 0;
+                        }
+                        else
+                        {
+                            gridNode.ValueRW.Cost = 1;
+                            gridNode.ValueRW.BestCost = byte.MaxValue;
+                        }
                     }
                 }
-            }
 
-            var gridNodeOpenQueue = new NativeQueue<RefRW<GridNode>>(Allocator.Temp);
-            var targetGridNode = gridNodeNativeArray[CalculateIndex(_targetGridPosition, gridSystemData.Width)];
-            gridNodeOpenQueue.Enqueue(targetGridNode);
+                var physicsWorldSingleton = SystemAPI.GetSingleton<PhysicsWorldSingleton>();
+                var collisionWorld = physicsWorldSingleton.CollisionWorld;
 
-            var safety = 1000;
-            while (gridNodeOpenQueue.Count > 0)
-            {
-                safety--;
-                if (safety < 0)
+                var distanceHitList = new NativeList<DistanceHit>(Allocator.Temp);
+                for (int x = 0; x < gridSystemData.Width; x++)
                 {
-                    Debug.LogError("Safety break");
-                    break;
+                    for (int y = 0; y < gridSystemData.Height; y++)
+                    {
+                        if (collisionWorld.OverlapSphere(
+                                GetWorldCenterPosition(x, y, gridSystemData.GridNodeSize),
+                                gridSystemData.GridNodeSize * 0.5f,
+                                ref distanceHitList,
+                                new CollisionFilter
+                                {
+                                    BelongsTo = ~0u,
+                                    CollidesWith = 1u << GameAssets.PATHFINDING_WALLS,
+                                    GroupIndex = 0,
+                                }
+                            ))
+                        {
+                            // There is a wall in this grid position
+                            var index = CalculateIndex(x, y, gridSystemData.Width);
+                            gridNodeNativeArray[index].ValueRW.Cost = WALL_COST;
+                        }
+                    }
                 }
 
-                var currentGridNode = gridNodeOpenQueue.Dequeue();
-                var neighborGridNodeList = GetNeighborGridNodeList(currentGridNode, gridNodeNativeArray,
-                    gridSystemData.Width, gridSystemData.Height);
+                distanceHitList.Dispose();
 
-                foreach (var neighborGridNode in neighborGridNodeList)
+                var gridNodeOpenQueue = new NativeQueue<RefRW<GridNode>>(Allocator.Temp);
+                var targetGridNode = gridNodeNativeArray[CalculateIndex(targetGridPosition, gridSystemData.Width)];
+                gridNodeOpenQueue.Enqueue(targetGridNode);
+
+                var safety = 1000;
+                while (gridNodeOpenQueue.Count > 0)
                 {
-                    if (neighborGridNode.ValueRO.Cost == WALL_COST)
+                    safety--;
+                    if (safety < 0)
                     {
-                        // This is a wall
-                        continue;
+                        Debug.LogError("Safety break");
+                        break;
                     }
 
-                    var newBestCost = (byte)(currentGridNode.ValueRO.BestCost + neighborGridNode.ValueRO.Cost);
-                    if (newBestCost < neighborGridNode.ValueRO.BestCost)
-                    {
-                        neighborGridNode.ValueRW.BestCost = newBestCost;
-                        neighborGridNode.ValueRW.Vector = CalculateVector(
-                            neighborGridNode.ValueRO.X, neighborGridNode.ValueRO.Y,
-                            currentGridNode.ValueRO.X, currentGridNode.ValueRO.Y);
+                    var currentGridNode = gridNodeOpenQueue.Dequeue();
+                    var neighborGridNodeList = GetNeighborGridNodeList(currentGridNode, gridNodeNativeArray,
+                        gridSystemData.Width, gridSystemData.Height);
 
-                        gridNodeOpenQueue.Enqueue(neighborGridNode);
+                    foreach (var neighborGridNode in neighborGridNodeList)
+                    {
+                        if (neighborGridNode.ValueRO.Cost == WALL_COST)
+                        {
+                            // This is a wall
+                            continue;
+                        }
+
+                        var newBestCost = (byte)(currentGridNode.ValueRO.BestCost + neighborGridNode.ValueRO.Cost);
+                        if (newBestCost < neighborGridNode.ValueRO.BestCost)
+                        {
+                            neighborGridNode.ValueRW.BestCost = newBestCost;
+                            neighborGridNode.ValueRW.Vector = CalculateVector(
+                                neighborGridNode.ValueRO.X, neighborGridNode.ValueRO.Y,
+                                currentGridNode.ValueRO.X, currentGridNode.ValueRO.Y);
+
+                            gridNodeOpenQueue.Enqueue(neighborGridNode);
+                        }
                     }
+
+                    neighborGridNodeList.Dispose();
                 }
 
-                neighborGridNodeList.Dispose();
+                gridNodeOpenQueue.Dispose();
+                gridNodeNativeArray.Dispose();
             }
-
-            gridNodeOpenQueue.Dispose();
-            gridNodeNativeArray.Dispose();
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -196,11 +231,21 @@ namespace DotsRts.Systems
                 var mouseGridPosition = GetGridPosition(mouseWorldPosition, gridSystemData.GridNodeSize);
                 if (IsValidGridPosition(mouseGridPosition, gridSystemData.Width, gridSystemData.Height))
                 {
+                    /*
                     var index = CalculateIndex(mouseGridPosition.x, mouseGridPosition.y, gridSystemData.Width);
                     var gridNodeEntity = gridSystemData.GridMap.GridEntityArray[index];
                     var gridNode = SystemAPI.GetComponentRW<GridNode>(gridNodeEntity);
 
-                    _targetGridPosition = mouseGridPosition;
+                    foreach (var (flowFieldFollower,
+                                 FlowFieldFollowerEnabled)
+                             in SystemAPI.Query<
+                                 RefRW<FlowFieldFollower>,
+                                 EnabledRefRW<FlowFieldFollower>>().WithPresent<FlowFieldFollower>())
+                    {
+                        flowFieldFollower.ValueRW.TargetPosition = mouseWorldPosition;
+                        FlowFieldFollowerEnabled.ValueRW = true;
+                    }
+                */
                 }
             }
 
@@ -214,7 +259,12 @@ namespace DotsRts.Systems
         public void OnDestroy(ref SystemState state)
         {
             var gridSystemData = SystemAPI.GetComponentRW<GridSystemData>(state.SystemHandle);
-            gridSystemData.ValueRW.GridMap.GridEntityArray.Dispose();
+            for (int i = 0; i < FLOW_FIELD_MAP_COUNT; i++)
+            {
+                gridSystemData.ValueRW.GridMapArray[i].GridEntityArray.Dispose();
+            }
+
+            gridSystemData.ValueRW.GridMapArray.Dispose();
         }
 
         public static NativeList<RefRW<GridNode>> GetNeighborGridNodeList(
@@ -322,6 +372,16 @@ namespace DotsRts.Systems
         {
             return gridPosition.x >= 0 && gridPosition.y >= 0 &&
                    gridPosition.x < width && gridPosition.y < height;
+        }
+
+        public static float3 GetWorldMovementVector(float2 vector)
+        {
+            return new float3(vector.x, 0f, vector.y);
+        }
+
+        public static bool IsWall(GridNode gridNode)
+        {
+            return gridNode.Cost == WALL_COST;
         }
     }
 }

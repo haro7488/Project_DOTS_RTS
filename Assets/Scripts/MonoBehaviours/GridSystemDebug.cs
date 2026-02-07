@@ -54,7 +54,13 @@ namespace DotsRts.MonoBehaviours
 
                     var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
                     var index = GridSystem.CalculateIndex(x, y, gridSystemData.Width);
-                    var gridNodeEntity = gridSystemData.GridMap.GridEntityArray[index];
+                    var gridIndex = gridSystemData.NextGridIndex - 1;
+                    if (gridIndex < 0)
+                    {
+                        gridIndex = 0;
+                    }
+
+                    var gridNodeEntity = gridSystemData.GridMapArray[gridIndex].GridEntityArray[index];
                     var gridNode = entityManager.GetComponentData<GridSystem.GridNode>(gridNodeEntity);
 
                     if (gridNode.Cost == 0)

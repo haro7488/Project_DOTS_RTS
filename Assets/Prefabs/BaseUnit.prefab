@@ -128,6 +128,8 @@ GameObject:
   - component: {fileID: 1390833886774821353}
   - component: {fileID: 8265529578692161819}
   - component: {fileID: 862391217857757744}
+  - component: {fileID: -2294680330188963443}
+  - component: {fileID: -4402995903917647298}
   m_Layer: 6
   m_Name: BaseUnit
   m_TagString: Untagged
@@ -376,6 +378,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.UnitTypeHolderAuthoring
   UnitType: 0
+--- !u!114 &-2294680330188963443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176904191762140280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a2e6ed4862424790d5344d72714477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.FlowFieldFollowerAuthoring
+--- !u!114 &-4402995903917647298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176904191762140280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c05f52e6c6340b0a43ce7a68bcea309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.FlowFieldPathRequestAuthoring
 --- !u!1001 &5028037812501017830
 PrefabInstance:
   m_ObjectHideFlags: 0

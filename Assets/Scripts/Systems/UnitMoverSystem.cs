@@ -8,11 +8,57 @@ namespace DotsRts.Systems
 {
     public partial struct UnitMoverSystem : ISystem
     {
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<GridSystem.GridSystemData>();
+        }
+
         public const float REACHED_TARGET_POSITION_DISTANCE_SQ = 2f;
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            var gridSystemData = SystemAPI.GetSingleton<GridSystem.GridSystemData>();
+            foreach (var (localTransform,
+                         flowFieldFollower,
+                         flowFieldFollowerEnabled,
+                         unitMover)
+                     in SystemAPI.Query<
+                         RefRO<LocalTransform>,
+                         RefRW<FlowFieldFollower>,
+                         EnabledRefRW<FlowFieldFollower>,
+                         RefRW<UnitMover>>())
+            {
+                var gridPosition = GridSystem.GetGridPosition(localTransform.ValueRO.Position,
+                    gridSystemData.GridNodeSize);
+                var index = GridSystem.CalculateIndex(gridPosition, gridSystemData.Width);
+                var gridNodeEntity = gridSystemData.GridMapArray[flowFieldFollower.ValueRO.GridIndex]
+                    .GridEntityArray[index];
+                var gridNode = SystemAPI.GetComponent<GridSystem.GridNode>(gridNodeEntity);
+                var gridNodeMoveVector = GridSystem.GetWorldMovementVector(gridNode.Vector);
+
+                if (GridSystem.IsWall(gridNode))
+                {
+                    gridNodeMoveVector = flowFieldFollower.ValueRO.LastMoveVector;
+                }
+                else
+                {
+                    flowFieldFollower.ValueRW.LastMoveVector = gridNodeMoveVector;
+                }
+
+                unitMover.ValueRW.TargetPosition =
+                    GridSystem.GetWorldCenterPosition(gridPosition.x, gridPosition.y, gridSystemData.GridNodeSize) +
+                    gridNodeMoveVector * (gridSystemData.GridNodeSize * 2f);
+
+                if (math.distance(localTransform.ValueRO.Position, flowFieldFollower.ValueRO.TargetPosition) <
+                    gridSystemData.GridNodeSize)
+                {
+                    // Target destination
+                    unitMover.ValueRW.TargetPosition = localTransform.ValueRO.Position;
+                    flowFieldFollowerEnabled.ValueRW = false;
+                }
+            }
+
             var unitMoverJob = new UnitMoverJob
             {
                 DeltaTime = SystemAPI.Time.DeltaTime,

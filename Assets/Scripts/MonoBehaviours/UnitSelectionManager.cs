@@ -26,7 +26,7 @@ namespace DotsRts.MonoBehaviours
 
         private void Update()
         {
-            if(EventSystem.current.IsPointerOverGameObject())
+            if (EventSystem.current.IsPointerOverGameObject())
             {
                 return;
             }
@@ -35,7 +35,7 @@ namespace DotsRts.MonoBehaviours
             {
                 return;
             }
-            
+
             if (Input.GetMouseButtonDown(0))
             {
                 _selectionStartMousePosition = Input.mousePosition;
@@ -171,13 +171,15 @@ namespace DotsRts.MonoBehaviours
 
                 if (!isAttackingSingleTarget)
                 {
-                    entityQuery = new EntityQueryBuilder(Allocator.Temp)
-                        .WithAll<UnitMover, Selected>().WithPresent<MoveOverride, TargetOverride>()
-                        .Build(entityManager);
+                    entityQuery = new EntityQueryBuilder(Allocator.Temp).WithAll<UnitMover, Selected>()
+                        .WithPresent<MoveOverride, TargetOverride, FlowFieldPathRequest>().Build(entityManager);
 
                     var entityArray = entityQuery.ToEntityArray(Allocator.Temp);
                     var moveOverrideArray = entityQuery.ToComponentDataArray<MoveOverride>(Allocator.Temp);
                     var targetOverrideArray = entityQuery.ToComponentDataArray<TargetOverride>(Allocator.Temp);
+                    var flowFieldPathRequestArray =
+                        entityQuery.ToComponentDataArray<FlowFieldPathRequest>(Allocator.Temp);
+
                     var movePositionArray = GenerateMovePositionArray(mouseWorldPosition, moveOverrideArray.Length);
                     for (int i = 0; i < moveOverrideArray.Length; i++)
                     {
@@ -189,10 +191,16 @@ namespace DotsRts.MonoBehaviours
                         var targetOverride = targetOverrideArray[i];
                         targetOverride.TargetEntity = Entity.Null;
                         targetOverrideArray[i] = targetOverride;
+
+                        var flowFieldPathRequest = flowFieldPathRequestArray[i];
+                        flowFieldPathRequest.TargetPosition = movePositionArray[i];
+                        flowFieldPathRequestArray[i] = flowFieldPathRequest;
+                        entityManager.SetComponentEnabled<FlowFieldPathRequest>(entityArray[i], true);
                     }
 
                     entityQuery.CopyFromComponentDataArray(moveOverrideArray);
                     entityQuery.CopyFromComponentDataArray(targetOverrideArray);
+                    entityQuery.CopyFromComponentDataArray(flowFieldPathRequestArray);
                 }
 
                 // Handle Barrakcs Rally Position
