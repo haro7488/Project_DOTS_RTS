@@ -1,4 +1,5 @@
-﻿using Unity.Burst;
+﻿using DotsRts.MonoBehaviours;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -60,7 +61,12 @@ namespace DotsRts.Systems
                         Start = localTransform.ValueRO.Position,
                         End = localTransform.ValueRO.Position +
                               dirToTarget * (meleeAttack.ValueRO.ColliderSize + distanceExtraToTestRaycast),
-                        Filter = CollisionFilter.Default
+                        Filter = new CollisionFilter
+                        {
+                            BelongsTo = ~0u,
+                            CollidesWith = 1u << GameAssets.UNITS_LAYER | 1u << GameAssets.BUILDINGS_LAYER,
+                            GroupIndex = 0,
+                        }
                     };
                     raycastHitList.Clear();
                     if (collisionWorld.CastRay(raycastInput, ref raycastHitList))
@@ -85,7 +91,7 @@ namespace DotsRts.Systems
                 {
                     targetPositionPathQueued.ValueRW.TargetPosition = localTransform.ValueRO.Position;
                     targetPositionPathQueuedEnabled.ValueRW = true;
-                    
+
                     meleeAttack.ValueRW.Timer -= SystemAPI.Time.DeltaTime;
                     if (meleeAttack.ValueRO.Timer > 0f)
                     {

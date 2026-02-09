@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 3012045424108977609}
   - component: {fileID: 4521202001806370194}
   - component: {fileID: 7281381176234702212}
+  - component: {fileID: 6693879110607167873}
   m_Layer: 10
   m_Name: MinimapIcon
   m_TagString: Untagged
@@ -122,6 +123,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6693879110607167873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549088819748064485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7198b1ed95664c99b0c6dccaf969fa46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.VisualUnderFogOfWarAuthoring
+  ParentGameObject: {fileID: 5396523823902930669}
+  SphereCastSize: 0.1
 --- !u!1 &5396523823902930669
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,8 +494,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5467059434821158197, guid: 829ad6d42f59d4a4fb4f6b27b697b6ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5372178962998335303}
   m_SourcePrefab: {fileID: 100100000, guid: 829ad6d42f59d4a4fb4f6b27b697b6ef, type: 3}
+--- !u!1 &339280476158189682 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5467059434821158197, guid: 829ad6d42f59d4a4fb4f6b27b697b6ef, type: 3}
+  m_PrefabInstance: {fileID: 5722870459982472519}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5372178962998335303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339280476158189682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7198b1ed95664c99b0c6dccaf969fa46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.VisualUnderFogOfWarAuthoring
+  ParentGameObject: {fileID: 5396523823902930669}
+  SphereCastSize: 0.1
 --- !u!4 &6052186415257787349 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2059859332303322770, guid: 829ad6d42f59d4a4fb4f6b27b697b6ef, type: 3}
@@ -545,10 +582,54 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8312266907993789189, guid: eddfbc19f64e0c14b86b89314ae317c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3511068278772598656}
+    - targetCorrespondingSourceObject: {fileID: 4138721341979176779, guid: eddfbc19f64e0c14b86b89314ae317c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7406653619780445704}
   m_SourcePrefab: {fileID: 100100000, guid: eddfbc19f64e0c14b86b89314ae317c6, type: 3}
 --- !u!4 &143171237544985275 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6572111562347035816, guid: eddfbc19f64e0c14b86b89314ae317c6, type: 3}
   m_PrefabInstance: {fileID: 6541603658562453011}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2995856272411520278 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8312266907993789189, guid: eddfbc19f64e0c14b86b89314ae317c6, type: 3}
+  m_PrefabInstance: {fileID: 6541603658562453011}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3511068278772598656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2995856272411520278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7198b1ed95664c99b0c6dccaf969fa46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.VisualUnderFogOfWarAuthoring
+  ParentGameObject: {fileID: 5396523823902930669}
+  SphereCastSize: 0.1
+--- !u!1 &7180920335250592088 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4138721341979176779, guid: eddfbc19f64e0c14b86b89314ae317c6, type: 3}
+  m_PrefabInstance: {fileID: 6541603658562453011}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7406653619780445704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180920335250592088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7198b1ed95664c99b0c6dccaf969fa46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.VisualUnderFogOfWarAuthoring
+  ParentGameObject: {fileID: 5396523823902930669}
+  SphereCastSize: 0.1
