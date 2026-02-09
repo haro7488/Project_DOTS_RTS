@@ -10,8 +10,13 @@ namespace DotsRts
         public GameObject ShootLightPrefabGameObject;
         public GameObject ScoutPrefabGameObject;
         public GameObject SoldierPrefabGameObject;
+        
         public GameObject BuildingTowerPrefabGameObject;
         public GameObject BuildingBarracksPrefabGameObject;
+
+        public GameObject BuildingIronHarvesterPrefabGameObject;
+        public GameObject BuildingGoldHarvesterPrefabGameObject;
+        public GameObject BuildingOilHarvesterPrefabGameObject;
 
         private class EntityReferencesAuthoringBaker : Baker<EntitiesReferencesAuthoring>
         {
@@ -27,6 +32,9 @@ namespace DotsRts
                     SoldierPrefabEntity = GetEntity(authoring.SoldierPrefabGameObject, TransformUsageFlags.Dynamic),
                     BuildingTowerPrefabEntity = GetEntity(authoring.BuildingTowerPrefabGameObject, TransformUsageFlags.Dynamic),
                     BuildingBarracksPrefabEntity = GetEntity(authoring.BuildingBarracksPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingIronHarvesterPrefabEntity = GetEntity(authoring.BuildingIronHarvesterPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingGoldHarvesterPrefabEntity = GetEntity(authoring.BuildingGoldHarvesterPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingOilHarvesterPrefabEntity = GetEntity(authoring.BuildingOilHarvesterPrefabGameObject, TransformUsageFlags.Dynamic),
                 });
             }
         }
@@ -42,5 +50,9 @@ namespace DotsRts
 
         public Entity BuildingTowerPrefabEntity;
         public Entity BuildingBarracksPrefabEntity;
+        
+        public Entity BuildingIronHarvesterPrefabEntity;
+        public Entity BuildingGoldHarvesterPrefabEntity;
+        public Entity BuildingOilHarvesterPrefabEntity;
     }
 }

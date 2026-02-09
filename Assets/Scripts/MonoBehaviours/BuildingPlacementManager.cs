@@ -99,7 +99,7 @@ namespace DotsRts.MonoBehaviours
             var collisionFilter = new CollisionFilter
             {
                 BelongsTo = ~0u,
-                CollidesWith = 1u << GameAssets.BUILDINGS_LAYER,
+                CollidesWith = 1u << GameAssets.BUILDINGS_LAYER | 1u << GameAssets.DEFAULT_LAYER,
                 GroupIndex = 0,
             };
 
@@ -129,6 +129,36 @@ namespace DotsRts.MonoBehaviours
                             return false;
                         }
                     }
+                }
+            }
+
+            if (_buildingTypeSo is BuildingResourceHarvesterTypeSO buildingResourceHarvesterTypeSO)
+            {
+                var hasValidNearbyResourceNode = false;
+                if (collisionWorld.OverlapSphere(mouseWorldPosition,
+                        buildingResourceHarvesterTypeSO.HarvestDistance,
+                        ref distanceHitList, collisionFilter))
+                {
+                    foreach (var distanceHit in distanceHitList)
+                    {
+                        if (entityManager.HasComponent<ResourceTypeSOHolder>(distanceHit.Entity))
+                        {
+                            var resourceTypeSoHolder =
+                                entityManager.GetComponentData<ResourceTypeSOHolder>(distanceHit.Entity);
+                            if (resourceTypeSoHolder.resourceType ==
+                                buildingResourceHarvesterTypeSO.HarvestableResourceType)
+                            {
+                                // Nearby valid resource node
+                                hasValidNearbyResourceNode = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!hasValidNearbyResourceNode)
+                {
+                    return false;
                 }
             }
 

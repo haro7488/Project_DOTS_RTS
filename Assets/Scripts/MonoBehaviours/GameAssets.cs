@@ -1,10 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DotsRts.MonoBehaviours
 {
     public class GameAssets : MonoBehaviour
     {
+        public const int DEFAULT_LAYER = 0;
         public const int UNITS_LAYER = 6;
         public const int BUILDINGS_LAYER = 7;
         public const int PATHFINDING_WALLS = 8;

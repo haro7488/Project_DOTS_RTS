@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f78d1e59a28faa4d85b42c580402a74, type: 3}
+  m_Name: IronHarvester
+  m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingResourceHarvesterTypeSO
+  BuildingType: 6
+  Prefab: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
+  BuildingDistanceMin: 10
+  ShowInBuildingPlacementManagerUI: 1
+  Sprite: {fileID: 21300000, guid: d68723ce033c83c45b0fd17e2ab8404d, type: 3}
+  VisualPrefab: {fileID: 8686191080717679773, guid: 986eac81f4856df47bacc9ed8bf0ea6d, type: 3}
+  HarvestableResourceType: 1
+  HarvestDistance: 7

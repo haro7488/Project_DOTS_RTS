@@ -11,6 +11,9 @@ namespace DotsRts
         Tower,
         Barracks,
         HQ,
+        GoldHarvester,
+        IronHarvester,
+        OilHarvester,
     }
 
     [CreateAssetMenu]
@@ -38,6 +41,12 @@ namespace DotsRts
                     return entitiesReferences.BuildingTowerPrefabEntity;
                 case BuildingType.Barracks:
                     return entitiesReferences.BuildingBarracksPrefabEntity;
+                case BuildingType.IronHarvester:
+                    return entitiesReferences.BuildingIronHarvesterPrefabEntity;
+                case BuildingType.GoldHarvester:
+                    return entitiesReferences.BuildingGoldHarvesterPrefabEntity;
+                case BuildingType.OilHarvester:
+                    return entitiesReferences.BuildingOilHarvesterPrefabEntity;
             }
         }
     }
