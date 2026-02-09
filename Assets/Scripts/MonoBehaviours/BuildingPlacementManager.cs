@@ -74,16 +74,22 @@ namespace DotsRts.MonoBehaviours
 
             if (Input.GetMouseButtonDown(0))
             {
-                if (CanPlaceBuilding())
+                if (ResourceManager.Instance.CanSpendResourceAmount(_buildingTypeSo.BuildCostResourceAmountArray))
                 {
-                    var mouseWorldPosition = MouseWorldPosition.Instance.GetPosition();
-                    var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+                    if (CanPlaceBuilding())
+                    {
+                        ResourceManager.Instance.SpendResourceAmount(_buildingTypeSo.BuildCostResourceAmountArray);
+                        
+                        var mouseWorldPosition = MouseWorldPosition.Instance.GetPosition();
+                        var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-                    var entityQuery = entityManager.CreateEntityQuery(typeof(EntitiesReferences));
-                    var entitiesReferences = entityQuery.GetSingleton<EntitiesReferences>();
+                        var entityQuery = entityManager.CreateEntityQuery(typeof(EntitiesReferences));
+                        var entitiesReferences = entityQuery.GetSingleton<EntitiesReferences>();
 
-                    var spawnedEntity = entityManager.Instantiate(_buildingTypeSo.GetPrefabEntity(entitiesReferences));
-                    entityManager.SetComponentData(spawnedEntity, LocalTransform.FromPosition(mouseWorldPosition));
+                        var spawnedEntity =
+                            entityManager.Instantiate(_buildingTypeSo.GetPrefabEntity(entitiesReferences));
+                        entityManager.SetComponentData(spawnedEntity, LocalTransform.FromPosition(mouseWorldPosition));
+                    }
                 }
             }
         }

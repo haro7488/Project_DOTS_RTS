@@ -18,5 +18,8 @@ MonoBehaviour:
   ShowInBuildingPlacementManagerUI: 1
   Sprite: {fileID: 21300000, guid: d68723ce033c83c45b0fd17e2ab8404d, type: 3}
   VisualPrefab: {fileID: 8686191080717679773, guid: 986eac81f4856df47bacc9ed8bf0ea6d, type: 3}
+  BuildCostResourceAmountArray:
+  - ResourceType: 2
+    Amount: 15
   HarvestableResourceType: 1
   HarvestDistance: 7

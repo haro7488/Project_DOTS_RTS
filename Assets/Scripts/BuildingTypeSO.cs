@@ -25,6 +25,7 @@ namespace DotsRts
         public bool ShowInBuildingPlacementManagerUI;
         public Sprite Sprite;
         public Transform VisualPrefab;
+        public ResourceAmount[] BuildCostResourceAmountArray; 
 
         public bool IsNone()
         {

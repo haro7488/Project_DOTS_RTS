@@ -23,6 +23,10 @@ namespace DotsRts.MonoBehaviours
             {
                 _resourceTypeAmountDict[resourceTypeSo.ResourceType] = 0;
             }
+
+            AddResourceAmount(ResourceType.Iron, 50);
+            AddResourceAmount(ResourceType.Gold, 50);
+            AddResourceAmount(ResourceType.Oil, 50);
         }
 
         public void AddResourceAmount(ResourceType resourceType, int amount)
@@ -34,6 +38,40 @@ namespace DotsRts.MonoBehaviours
         public int GetResourceAmount(ResourceType resourceType)
         {
             return _resourceTypeAmountDict[resourceType];
+        }
+
+        public bool CanSpendResourceAmount(ResourceAmount resourceAmount)
+        {
+            return _resourceTypeAmountDict[resourceAmount.ResourceType] >= resourceAmount.Amount;
+        }
+
+        public bool CanSpendResourceAmount(ResourceAmount[] resourceAmountArray)
+        {
+            foreach (var resourceAmount in resourceAmountArray)
+            {
+                if (!CanSpendResourceAmount(resourceAmount))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public void SpendResourceAmount(ResourceAmount resourceAmount)
+        {
+            _resourceTypeAmountDict[resourceAmount.ResourceType] -= resourceAmount.Amount;
+            OnResourceAmountChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void SpendResourceAmount(ResourceAmount[] resourceAmountArray)
+        {
+            foreach (var resourceAmount in resourceAmountArray)
+            {
+                SpendResourceAmount(resourceAmount);
+            }
+
+            OnResourceAmountChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

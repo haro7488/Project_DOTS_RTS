@@ -216,9 +216,9 @@ MonoBehaviour:
   SoldierPrefabGameObject: {fileID: 8181397551560425035, guid: b9ebc3bff5d83814d8199b1c56bb81bf, type: 3}
   BuildingTowerPrefabGameObject: {fileID: 8083243991317042178, guid: 26a1c7ceb6ab93d4ca065d67e5392435, type: 3}
   BuildingBarracksPrefabGameObject: {fileID: 8469668852645436735, guid: 0a5d672ce03a61047a6f7b61e7c01776, type: 3}
-  BuildingIronHarvesterPrefabGameObject: {fileID: 758610136}
-  BuildingGoldHarvesterPrefabGameObject: {fileID: 768875843}
-  BuildingOilHarvesterPrefabGameObject: {fileID: 1732518462}
+  BuildingIronHarvesterPrefabGameObject: {fileID: 4412451612171316262, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
+  BuildingGoldHarvesterPrefabGameObject: {fileID: 4782197878711775309, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
+  BuildingOilHarvesterPrefabGameObject: {fileID: 637950329576956176, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
 --- !u!1001 &674858994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -341,16 +341,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
---- !u!1 &758610136 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4412451612171316262, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-  m_PrefabInstance: {fileID: 8076458363503385775}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &768875843 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4782197878711775309, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-  m_PrefabInstance: {fileID: 5670626303941834778}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &918123336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1524,11 +1514,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1732518462 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 637950329576956176, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-  m_PrefabInstance: {fileID: 4748429597867928544}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1876249144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2051,120 +2036,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0c879ac796710f44b6d7f39911500c7, type: 3}
---- !u!1001 &4748429597867928544
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 637950329576956176, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_Name
-      value: BuildingOilHarvester
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 22.42
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
---- !u!1001 &5670626303941834778
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4782197878711775309, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_Name
-      value: BuildingGoldHarvester
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 33.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 14.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
 --- !u!1001 &5709407248167980273
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2336,63 +2207,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab217d6c7c420674d92f72de193a71ea, type: 3}
---- !u!1001 &8076458363503385775
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 32.68
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 3.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4412451612171316262, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
-      propertyPath: m_Name
-      value: BuildingIronHarvester
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2418,6 +2232,3 @@ SceneRoots:
   - {fileID: 7808195761377098035}
   - {fileID: 5709407248167980273}
   - {fileID: 6887649104289630482}
-  - {fileID: 5670626303941834778}
-  - {fileID: 8076458363503385775}
-  - {fileID: 4748429597867928544}

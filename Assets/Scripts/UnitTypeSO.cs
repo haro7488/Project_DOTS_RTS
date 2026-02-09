@@ -18,6 +18,7 @@ namespace DotsRts
         public UnitType UnitType;
         public float ProgressMax;
         public Sprite Sprite;
+        public ResourceAmount[] SpawnCostResourceAmountArray;
 
         public Entity GetPrefabEntity(EntitiesReferences entitiesReferences)
         {
