@@ -1,4 +1,4 @@
-﻿#define GRID_DEBUG
+﻿// #define GRID_DEBUG
 
 using DotsRts.MonoBehaviours;
 using Unity.Burst;
