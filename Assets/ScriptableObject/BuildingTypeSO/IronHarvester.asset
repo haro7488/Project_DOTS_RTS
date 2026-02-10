@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: IronHarvester
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingResourceHarvesterTypeSO
   BuildingType: 6
+  BuildingConstructionTimerMax: 10
+  ConstructionYOffset: -2.45
   Prefab: {fileID: 3322820156518127963, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
   BuildingDistanceMin: 10
   ShowInBuildingPlacementManagerUI: 1

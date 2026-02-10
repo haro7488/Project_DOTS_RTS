@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: GoldHarvester
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingResourceHarvesterTypeSO
   BuildingType: 5
+  BuildingConstructionTimerMax: 10
+  ConstructionYOffset: -5.17
   Prefab: {fileID: 8085403489733314838, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
   BuildingDistanceMin: 10
   ShowInBuildingPlacementManagerUI: 1

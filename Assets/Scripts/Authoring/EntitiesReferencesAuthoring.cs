@@ -13,10 +13,17 @@ namespace DotsRts
         
         public GameObject BuildingTowerPrefabGameObject;
         public GameObject BuildingBarracksPrefabGameObject;
-
         public GameObject BuildingIronHarvesterPrefabGameObject;
         public GameObject BuildingGoldHarvesterPrefabGameObject;
         public GameObject BuildingOilHarvesterPrefabGameObject;
+        
+        public GameObject BuildingTowerVisualPrefabGameObject;
+        public GameObject BuildingBarracksVisualPrefabGameObject;
+        public GameObject BuildingIronHarvesterVisualPrefabGameObject;
+        public GameObject BuildingGoldHarvesterVisualPrefabGameObject;
+        public GameObject BuildingOilHarvesterVisualPrefabGameObject;
+        
+        public GameObject BuildingConstructionPrefabGameObject;
 
         private class EntityReferencesAuthoringBaker : Baker<EntitiesReferencesAuthoring>
         {
@@ -35,6 +42,12 @@ namespace DotsRts
                     BuildingIronHarvesterPrefabEntity = GetEntity(authoring.BuildingIronHarvesterPrefabGameObject, TransformUsageFlags.Dynamic),
                     BuildingGoldHarvesterPrefabEntity = GetEntity(authoring.BuildingGoldHarvesterPrefabGameObject, TransformUsageFlags.Dynamic),
                     BuildingOilHarvesterPrefabEntity = GetEntity(authoring.BuildingOilHarvesterPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingTowerVisualPrefabEntity = GetEntity(authoring.BuildingTowerVisualPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingBarracksVisualPrefabEntity = GetEntity(authoring.BuildingBarracksVisualPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingIronHarvesterVisualPrefabEntity = GetEntity(authoring.BuildingIronHarvesterVisualPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingGoldHarvesterVisualPrefabEntity = GetEntity(authoring.BuildingGoldHarvesterVisualPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingOilHarvesterVisualPrefabEntity = GetEntity(authoring.BuildingOilHarvesterVisualPrefabGameObject, TransformUsageFlags.Dynamic),
+                    BuildingConstructionPrefabEntity = GetEntity(authoring.BuildingConstructionPrefabGameObject, TransformUsageFlags.Dynamic)
                 });
             }
         }
@@ -50,9 +63,16 @@ namespace DotsRts
 
         public Entity BuildingTowerPrefabEntity;
         public Entity BuildingBarracksPrefabEntity;
-        
         public Entity BuildingIronHarvesterPrefabEntity;
         public Entity BuildingGoldHarvesterPrefabEntity;
         public Entity BuildingOilHarvesterPrefabEntity;
+        
+        public Entity BuildingTowerVisualPrefabEntity;
+        public Entity BuildingBarracksVisualPrefabEntity;
+        public Entity BuildingIronHarvesterVisualPrefabEntity;
+        public Entity BuildingGoldHarvesterVisualPrefabEntity;
+        public Entity BuildingOilHarvesterVisualPrefabEntity;
+        
+        public Entity BuildingConstructionPrefabEntity;
     }
 }

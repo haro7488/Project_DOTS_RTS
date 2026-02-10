@@ -79,16 +79,35 @@ namespace DotsRts.MonoBehaviours
                     if (CanPlaceBuilding())
                     {
                         ResourceManager.Instance.SpendResourceAmount(_buildingTypeSo.BuildCostResourceAmountArray);
-                        
+
                         var mouseWorldPosition = MouseWorldPosition.Instance.GetPosition();
                         var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
                         var entityQuery = entityManager.CreateEntityQuery(typeof(EntitiesReferences));
                         var entitiesReferences = entityQuery.GetSingleton<EntitiesReferences>();
 
-                        var spawnedEntity =
-                            entityManager.Instantiate(_buildingTypeSo.GetPrefabEntity(entitiesReferences));
-                        entityManager.SetComponentData(spawnedEntity, LocalTransform.FromPosition(mouseWorldPosition));
+                        // var spawnedEntity = entityManager.Instantiate(_buildingTypeSo.GetPrefabEntity(entitiesReferences));
+                        // entityManager.SetComponentData(spawnedEntity, LocalTransform.FromPosition(mouseWorldPosition));
+
+                        var buildingConstructionVisualEntity =
+                            entityManager.Instantiate(_buildingTypeSo.GetVisualPrefabEntity(entitiesReferences));
+                        entityManager.SetComponentData(buildingConstructionVisualEntity,
+                            LocalTransform.FromPosition(mouseWorldPosition));
+
+                        var buildingConstructionEntity =
+                            entityManager.Instantiate(entitiesReferences.BuildingConstructionPrefabEntity);
+                        entityManager.SetComponentData(buildingConstructionEntity,
+                            LocalTransform.FromPosition(mouseWorldPosition));
+                        entityManager.SetComponentData(buildingConstructionEntity, new BuildingConstruction
+                        {
+                            BuildingType = _buildingTypeSo.BuildingType,
+                            ConstructionTimer = 0f,
+                            ConstructionTimerMax = _buildingTypeSo.BuildingConstructionTimerMax,
+                            FinalPrefabEntity = _buildingTypeSo.GetPrefabEntity(entitiesReferences),
+                            VisualEntity = buildingConstructionVisualEntity,
+                            StartPosition = mouseWorldPosition + new Vector3(0, _buildingTypeSo.ConstructionYOffset, 0),
+                            EndPosition = mouseWorldPosition,
+                        });
                     }
                 }
             }
@@ -126,6 +145,17 @@ namespace DotsRts.MonoBehaviours
                 foreach (var distanceHit in distanceHitList)
                 {
                     if (entityManager.HasComponent<BuildingTypeSOHolder>(distanceHit.Entity))
+                    {
+                        var buildingTypeSoHolder =
+                            entityManager.GetComponentData<BuildingTypeSOHolder>(distanceHit.Entity);
+                        if (buildingTypeSoHolder.BuildingType == _buildingTypeSo.BuildingType)
+                        {
+                            // Same type too close
+                            return false;
+                        }
+                    }
+                    
+                    if (entityManager.HasComponent<BuildingConstruction>(distanceHit.Entity))
                     {
                         var buildingTypeSoHolder =
                             entityManager.GetComponentData<BuildingTypeSOHolder>(distanceHit.Entity);

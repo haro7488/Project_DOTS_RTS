@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Tower
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingTypeSO
   BuildingType: 2
+  BuildingConstructionTimerMax: 10
+  ConstructionYOffset: -10.33
   Prefab: {fileID: 6181445616671653367, guid: 26a1c7ceb6ab93d4ca065d67e5392435, type: 3}
   BuildingDistanceMin: 10
   ShowInBuildingPlacementManagerUI: 1

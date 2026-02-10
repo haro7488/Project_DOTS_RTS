@@ -26,6 +26,12 @@ namespace DotsRts.Systems
                 {
                     health.ValueRW.OnDead = true;
                     entityCommandBuffer.DestroyEntity(entity);
+
+                    if (SystemAPI.HasComponent<BuildingConstruction>(entity))
+                    {
+                        var buildingConstruction = SystemAPI.GetComponent<BuildingConstruction>(entity);
+                        entityCommandBuffer.DestroyEntity(buildingConstruction.VisualEntity);
+                    }
                 }
             }
         }

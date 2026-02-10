@@ -20,6 +20,8 @@ namespace DotsRts
     public class BuildingTypeSO : ScriptableObject
     {
         public BuildingType BuildingType;
+        public float BuildingConstructionTimerMax;
+        public float ConstructionYOffset;
         public Transform Prefab;
         public float BuildingDistanceMin;
         public bool ShowInBuildingPlacementManagerUI;
@@ -50,5 +52,25 @@ namespace DotsRts
                     return entitiesReferences.BuildingOilHarvesterPrefabEntity;
             }
         }
+        
+        public Entity GetVisualPrefabEntity(EntitiesReferences entitiesReferences)
+        {
+            switch (BuildingType)
+            {
+                default:
+                case BuildingType.None:
+                case BuildingType.Tower:
+                    return entitiesReferences.BuildingTowerVisualPrefabEntity;
+                case BuildingType.Barracks:
+                    return entitiesReferences.BuildingBarracksVisualPrefabEntity;
+                case BuildingType.IronHarvester:
+                    return entitiesReferences.BuildingIronHarvesterVisualPrefabEntity;
+                case BuildingType.GoldHarvester:
+                    return entitiesReferences.BuildingGoldHarvesterVisualPrefabEntity;
+                case BuildingType.OilHarvester:
+                    return entitiesReferences.BuildingOilHarvesterVisualPrefabEntity;
+            }
+        }
+
     }
 }

@@ -219,6 +219,12 @@ MonoBehaviour:
   BuildingIronHarvesterPrefabGameObject: {fileID: 4412451612171316262, guid: 9916897a1867e1b4ba02079ec69b5e45, type: 3}
   BuildingGoldHarvesterPrefabGameObject: {fileID: 4782197878711775309, guid: 1ec5ff9a0a05c6345bb6752d7ff1ffe8, type: 3}
   BuildingOilHarvesterPrefabGameObject: {fileID: 637950329576956176, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
+  BuildingTowerVisualPrefabGameObject: {fileID: 5799947214760584452, guid: 4dbe3453c2a716743b0db56f6ced9c3b, type: 3}
+  BuildingBarracksVisualPrefabGameObject: {fileID: 715989064538214012, guid: d5f97a2fd6630b34982aaca8876d69ef, type: 3}
+  BuildingIronHarvesterVisualPrefabGameObject: {fileID: 184314028090552627, guid: 986eac81f4856df47bacc9ed8bf0ea6d, type: 3}
+  BuildingGoldHarvesterVisualPrefabGameObject: {fileID: 4499998760003975059, guid: d92e1b4fc516b61468081516cc5c14f1, type: 3}
+  BuildingOilHarvesterVisualPrefabGameObject: {fileID: 4785703203425898357, guid: 2e71adb493af6ac46980b7cb9775dd45, type: 3}
+  BuildingConstructionPrefabGameObject: {fileID: 5476730382927001613, guid: 1d25c95c89160fc4a818417b1c4d30d2, type: 3}
 --- !u!1001 &674858994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -331,6 +337,18 @@ PrefabInstance:
     - target: {fileID: 6694353537936104692, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7239828710346518911, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7239828710346518911, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7239828710346518911, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8181397551560425035, guid: 21625727de1eecb45bbc560e02c65407, type: 3}
       propertyPath: m_Name

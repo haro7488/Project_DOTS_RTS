@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: OilHarvester
   m_EditorClassIdentifier: Assembly-CSharp::DotsRts.BuildingResourceHarvesterTypeSO
   BuildingType: 7
+  BuildingConstructionTimerMax: 10
+  ConstructionYOffset: -9.82
   Prefab: {fileID: 3868896027689809997, guid: b6207d784b19c7a41b2089a32fd17c4e, type: 3}
   BuildingDistanceMin: 10
   ShowInBuildingPlacementManagerUI: 1
